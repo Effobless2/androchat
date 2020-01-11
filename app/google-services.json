@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "456447996779",
+    "firebase_url": "https://androchat-3f429.firebaseio.com",
+    "project_id": "androchat-3f429",
+    "storage_bucket": "androchat-3f429.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:456447996779:android:ce81e59dcd1179a67e122e",
+        "android_client_info": {
+          "package_name": "com.example.androchat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "456447996779-eosrqs20kgpmvo0f6grql49rkdt4qt43.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.androchat",
+            "certificate_hash": "df084f0306b4becb626900765939eb6a3f2d080a"
+          }
+        },
+        {
+          "client_id": "456447996779-lhcbsqgdjfilkgssec8cr3t8je3ur767.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAkSjL346kRBM2avjQror_Fhg5H2q8SVdU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "456447996779-lhcbsqgdjfilkgssec8cr3t8je3ur767.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
