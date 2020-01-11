@@ -1,4 +1,4 @@
-package firelib;
+package com.example.firelib;
 
 public interface FirebaseContract {
 
