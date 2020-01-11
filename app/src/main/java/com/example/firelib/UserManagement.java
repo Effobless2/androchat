@@ -16,7 +16,7 @@ public class UserManagement {
 
     public static void register(final IUserRegistrationListener context, User user){
         context.processStarted();
-        DbConnect.getDatabase().collection("users").add(user)
+        DbConnect.getDatabase().collection(User.COLLECTION_DATABASE_NAME).add(user)
                 .continueWith(new Continuation<DocumentReference, DocumentReference>() {
                     @Override
                     public DocumentReference then(@NonNull Task<DocumentReference> task) throws Exception {
@@ -28,7 +28,10 @@ public class UserManagement {
 
     public static void connection(final IUserConnectionListener context, String login, String password){
         context.connectionStarted();
-        DbConnect.getDatabase().collection("users").whereEqualTo("name", login).get()
+        DbConnect.getDatabase().
+                collection(User.COLLECTION_DATABASE_NAME)
+                .whereEqualTo(User.LOGIN_DATABASE_FIELD, login)
+                .whereEqualTo(User.PASSWORD_DATABASE_FIELD, password).get()
                 .continueWith(new Continuation<QuerySnapshot, Object>() {
                     @Override
                     public Object then(@NonNull Task<QuerySnapshot> task) throws Exception {
