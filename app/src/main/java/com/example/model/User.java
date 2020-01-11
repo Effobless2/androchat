@@ -57,4 +57,11 @@ public class User {
     public void setPseudo(String pseudo) {
         this.pseudo = pseudo;
     }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "pseudo='" + pseudo + '\'' +
+                '}';
+    }
 }
