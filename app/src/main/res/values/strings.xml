@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Androchat</string>
+    <string name="connection">Connection</string>
+    <string name="inscription">Inscription</string>
+    <string name="email">Email address</string>
+    <string name="pseudo">User name</string>
+    <string name="pwd">Password</string>
 </resources>

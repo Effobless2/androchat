@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Androchat</string>
+    <string name="connection">Connexion</string>
+    <string name="inscription">Inscription</string>
+    <string name="email">Adresse mail</string>
+    <string name="pseudo">Nom d\'utilisateur</string>
+    <string name="pwd">Mot de passe</string>
+</resources>
