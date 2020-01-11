@@ -2,7 +2,7 @@ package com.example.firelib;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 
-public class DbConnect {
+class DbConnect {
     private static FirebaseFirestore database;
 
     public static FirebaseFirestore getDatabase(){

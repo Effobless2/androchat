@@ -1,8 +1,9 @@
 package com.example.firelib.contracts;
 
-import com.google.firebase.firestore.DocumentReference;
-
 public interface IUserRegistrationListener {
-    void processStarted();
-    void processFinished(String id);
+    void verificationProcess();
+    void registrationProcess();
+    void registrationSucceed(String id);
+    void loginAlreadyTaken(String login);
+    void pseudoAlreadyTaken(String pseudo);
 }
