@@ -1,17 +1,11 @@
 package com.example.firelib;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 
-import com.example.firelib.contracts.IUserConnectionListener;
-import com.example.firelib.contracts.IUserRegistrationListener;
-import com.example.firelib.contracts.IUserResearcherListener;
 import com.example.model.User;
 import com.example.model.UserRegistration;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -21,117 +15,83 @@ import java.util.List;
 public class UserManagement {
     private static final String LOG_CATEGORY = "UserManagement";
 
-    public static void register(final IUserRegistrationListener context, final UserRegistration user){
-        context.verificationProcess();
-        loginIsUnique(user.getLogin())
-        .continueWith(new Continuation<Boolean, Object>() {
-            @Override
-            public Object then(@NonNull Task<Boolean> task) throws Exception {
-                boolean result = task.getResult();
-                if(!result)
-                    context.loginAlreadyTaken(user.getLogin());
-                else{
-                    pseudoIsUnique(user.getPseudo())
-                            .continueWith(new Continuation<Boolean, Object>() {
-                                @Override
-                                public Object then(@NonNull Task<Boolean> task) throws Exception {
-                                    boolean result = task.getResult();
-                                    if(!result)
-                                        context.pseudoAlreadyTaken(user.getPseudo());
-                                    else{
-                                        context.registrationProcess();
-                                        register(user)
-                                                .continueWith(new Continuation<DocumentReference, DocumentReference>() {
-                                                    @Override
-                                                    public DocumentReference then(@NonNull Task<DocumentReference> task) throws Exception {
-                                                        context.registrationSucceed(task.getResult().getId());
-                                                        return null;
-                                                    }
-                                                });
-                                    }
-                                    return null;
-                                }
-                            });
-                }
-                return null;
-            }
-        });
-
-    }
-
-    private static Task<Boolean> loginIsUnique(String login){
-        return DbConnect.getDatabase().collection(User.COLLECTION_DATABASE_NAME)
-                .whereEqualTo(User.LOGIN_DATABASE_FIELD, login).get()
-                .continueWith(new Continuation<QuerySnapshot, Boolean>() {
+    public static Task<List<User>> getAllUser(){
+        return UserDAL.getAllUser().get()
+                .continueWith(new Continuation<QuerySnapshot, List<User>>() {
                     @Override
-                    public Boolean then(@NonNull Task<QuerySnapshot> task) throws Exception {
-                        QuerySnapshot snapshots = task.getResult();
-                        return snapshots.getDocuments().size() == 0;
+                    public List<User> then(@NonNull Task<QuerySnapshot> task) throws Exception {
+                        List<User> result = new ArrayList<>();
+                        QuerySnapshot snapshot = task.getResult();
+                        List<DocumentSnapshot> documentSnapshots = snapshot.getDocuments();
+                        for (DocumentSnapshot documentSnapshot : documentSnapshots) {
+                            result.add(documentSnapshot.toObject(User.class));
+                        }
+                        return result;
                     }
                 });
     }
 
-    private static Task<Boolean> pseudoIsUnique(String pseudo){
-        return DbConnect.getDatabase().collection(User.COLLECTION_DATABASE_NAME)
-                .whereEqualTo(User.PSEUDO_DATABASE_FIELD, pseudo).get()
-                .continueWith(new Continuation<QuerySnapshot, Boolean>() {
+    public static Task<List<User>> getUserByLogin(String login){
+        return UserDAL.getUserByLogin(login).get()
+                .continueWith(new Continuation<QuerySnapshot, List<User>>() {
                     @Override
-                    public Boolean then(@NonNull Task<QuerySnapshot> task) throws Exception {
-                        QuerySnapshot snapshots = task.getResult();
-                        return snapshots.getDocuments().size() == 0;
+                    public List<User> then(@NonNull Task<QuerySnapshot> task) throws Exception {
+                        List<User> result = new ArrayList<>();
+                        QuerySnapshot snapshot = task.getResult();
+                        List<DocumentSnapshot> documentSnapshots = snapshot.getDocuments();
+                        for (DocumentSnapshot documentSnapshot : documentSnapshots) {
+                            result.add(documentSnapshot.toObject(User.class));
+                        }
+                        return result;
                     }
                 });
     }
 
-    private static Task<DocumentReference> register(UserRegistration user){
-        return DbConnect.getDatabase().collection(User.COLLECTION_DATABASE_NAME).add(user);
+    public static Task<List<User>> getUserByPseudo(String pseudo){
+        return UserDAL.getUserByPseudo(pseudo).get()
+                .continueWith(new Continuation<QuerySnapshot, List<User>>() {
+                    @Override
+                    public List<User> then(@NonNull Task<QuerySnapshot> task) throws Exception {
+                        List<User> result = new ArrayList<>();
+                        QuerySnapshot snapshot = task.getResult();
+                        List<DocumentSnapshot> documentSnapshots = snapshot.getDocuments();
+                        for (DocumentSnapshot documentSnapshot : documentSnapshots) {
+                            result.add(documentSnapshot.toObject(User.class));
+                        }
+                        return result;
+                    }
+                });
     }
 
-    public static void connection(final IUserConnectionListener context, String login, String password){
-        context.connectionStarted();
-        DbConnect.getDatabase()
-                .collection(User.COLLECTION_DATABASE_NAME)
-                .whereEqualTo(User.LOGIN_DATABASE_FIELD, login)
-                .whereEqualTo(User.PASSWORD_DATABASE_FIELD, password).get()
-                .continueWith(new Continuation<QuerySnapshot, Object>() {
+    public static Task<User> getUserById(String id){
+        return UserDAL.getUserById(id).get()
+                .continueWith(new Continuation<DocumentSnapshot, User>() {
                     @Override
-                    public Object then(@NonNull Task<QuerySnapshot> task) throws Exception {
-                        QuerySnapshot snapshots = task.getResult();
-                        List<DocumentSnapshot> list = snapshots.getDocuments();
-                        if(list.size() == 0)
-                            context.connectionFailed();
-                        else{
-                            User result = list.get(0).toObject(User.class);
-                            context.connectionSucceeded(result);
+                    public User then(@NonNull Task<DocumentSnapshot> task) throws Exception {
+                        DocumentSnapshot snapshot = task.getResult();
+                        return snapshot.toObject(User.class);
+                    }
+                });
+    }
+
+    public static Task<String> connection(String login, String password){
+        return UserDAL.connection(login, password).get()
+                .continueWith(new Continuation<QuerySnapshot, String>() {
+                    @Override
+                    public String then(@NonNull Task<QuerySnapshot> task) throws Exception {
+                        QuerySnapshot snapshot = task.getResult();
+                        List<DocumentSnapshot> documentSnapshots = snapshot.getDocuments();
+                        if (documentSnapshots.size() > 0){
+                            return documentSnapshots.get(0).getId();
                         }
                         return null;
                     }
                 });
     }
 
-    public static void getUsersByPseudo(final IUserResearcherListener context, String pseudo){
-        context.searchInProgress();
-        DbConnect.getDatabase()
-                .collection(User.COLLECTION_DATABASE_NAME)
-                            .whereEqualTo(User.PSEUDO_DATABASE_FIELD, pseudo).get()
-                            .continueWith(new Continuation<QuerySnapshot, Object>() {
-                                @Override
-                                public Object then(@NonNull Task<QuerySnapshot> task) throws Exception {
-                        Log.i("caca", "passé");
-                        try{
-                            QuerySnapshot snapshot = task.getResult();
-                            List<DocumentSnapshot> list = snapshot.getDocuments();
-                            List<User> result = new ArrayList<>();
-                            for (DocumentSnapshot documentSnapshot : list) {
-
-                                result.add(documentSnapshot.toObject(User.class));
-                            }
-                            context.searchFinished(result);
-                        } catch(Exception e){
-                            Log.i(LOG_CATEGORY, e.getMessage());
-                        }
-                        return null;
-                    }
-                });
+    public static Task<String> registration(UserRegistration newUser){
+        RegistrationAsyncTask task = new RegistrationAsyncTask(newUser);
+        task.execute();
+        return task.getTask();
     }
 }
