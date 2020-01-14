@@ -8,6 +8,7 @@ import com.example.firelib.contracts.IUserConnectionListener;
 import com.example.firelib.contracts.IUserRegistrationListener;
 import com.example.firelib.contracts.IUserResearcherListener;
 import com.example.model.User;
+import com.example.model.UserRegistration;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
@@ -20,9 +21,9 @@ import java.util.List;
 public class UserManagement {
     private static final String LOG_CATEGORY = "UserManagement";
 
-    public static void register(final IUserRegistrationListener context, final User user){
+    public static void register(final IUserRegistrationListener context, final UserRegistration user){
         context.verificationProcess();
-        verifyLogin(user.getLogin())
+        loginIsUnique(user.getLogin())
         .continueWith(new Continuation<Boolean, Object>() {
             @Override
             public Object then(@NonNull Task<Boolean> task) throws Exception {
@@ -30,7 +31,7 @@ public class UserManagement {
                 if(!result)
                     context.loginAlreadyTaken(user.getLogin());
                 else{
-                    verifyPseudo(user.getPseudo())
+                    pseudoIsUnique(user.getPseudo())
                             .continueWith(new Continuation<Boolean, Object>() {
                                 @Override
                                 public Object then(@NonNull Task<Boolean> task) throws Exception {
@@ -58,37 +59,31 @@ public class UserManagement {
 
     }
 
-    private static Task<Boolean> verifyLogin(String login){
+    private static Task<Boolean> loginIsUnique(String login){
         return DbConnect.getDatabase().collection(User.COLLECTION_DATABASE_NAME)
                 .whereEqualTo(User.LOGIN_DATABASE_FIELD, login).get()
                 .continueWith(new Continuation<QuerySnapshot, Boolean>() {
                     @Override
                     public Boolean then(@NonNull Task<QuerySnapshot> task) throws Exception {
                         QuerySnapshot snapshots = task.getResult();
-                        if(snapshots.getDocuments().size() != 0){
-                            return false;
-                        }
-                        return true;
+                        return snapshots.getDocuments().size() == 0;
                     }
                 });
     }
 
-    private static Task<Boolean> verifyPseudo(String pseudo){
+    private static Task<Boolean> pseudoIsUnique(String pseudo){
         return DbConnect.getDatabase().collection(User.COLLECTION_DATABASE_NAME)
                 .whereEqualTo(User.PSEUDO_DATABASE_FIELD, pseudo).get()
                 .continueWith(new Continuation<QuerySnapshot, Boolean>() {
                     @Override
                     public Boolean then(@NonNull Task<QuerySnapshot> task) throws Exception {
                         QuerySnapshot snapshots = task.getResult();
-                        if(snapshots.size() != 0){
-                            return false;
-                        }
-                        return true;
+                        return snapshots.getDocuments().size() == 0;
                     }
                 });
     }
 
-    private static Task<DocumentReference> register(User user){
+    private static Task<DocumentReference> register(UserRegistration user){
         return DbConnect.getDatabase().collection(User.COLLECTION_DATABASE_NAME).add(user);
     }
 
@@ -118,10 +113,10 @@ public class UserManagement {
         context.searchInProgress();
         DbConnect.getDatabase()
                 .collection(User.COLLECTION_DATABASE_NAME)
-                .whereEqualTo(User.PSEUDO_DATABASE_FIELD, pseudo).get()
-                .continueWith(new Continuation<QuerySnapshot, Object>() {
-                    @Override
-                    public Object then(@NonNull Task<QuerySnapshot> task) throws Exception {
+                            .whereEqualTo(User.PSEUDO_DATABASE_FIELD, pseudo).get()
+                            .continueWith(new Continuation<QuerySnapshot, Object>() {
+                                @Override
+                                public Object then(@NonNull Task<QuerySnapshot> task) throws Exception {
                         Log.i("caca", "passé");
                         try{
                             QuerySnapshot snapshot = task.getResult();
