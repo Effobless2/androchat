@@ -1,7 +1,8 @@
-package com.example.firelib;
+package com.example.firelib.managers;
 
 import androidx.annotation.NonNull;
 
+import com.example.firelib.DAL.UserDAL;
 import com.example.model.User;
 import com.example.model.UserRegistration;
 import com.google.android.gms.tasks.Continuation;
@@ -12,6 +13,14 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+ * API of the library for Users Management
+ * It should be the only class used by UIs
+ * TODO: Foreach requests : Manage the way where the device is outline
+ *  (already done for registration but could be better)
+ * TODO: Take a look to ConnectivityManager
+ *  (https://developer.android.com/training/basics/network-ops/managing#java)
+ */
 public class UserManagement {
     private static final String LOG_CATEGORY = "UserManagement";
 

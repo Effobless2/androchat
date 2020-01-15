@@ -1,4 +1,4 @@
-package com.example.firelib;
+package com.example.firelib.DAL;
 
 import com.example.model.User;
 import com.example.model.UserRegistration;
@@ -6,7 +6,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.Query;
 
-class UserDAL {
+public class UserDAL {
     public static Query getAllUser(){
         return DbConnect.getDatabase()
                 .collection(User.COLLECTION_DATABASE_NAME)
@@ -43,7 +43,7 @@ class UserDAL {
                 .whereEqualTo(User.PASSWORD_DATABASE_FIELD, password);
     }
 
-    static Task<DocumentReference> register(UserRegistration newUser){
+    public static Task<DocumentReference> register(UserRegistration newUser){
         return DbConnect.getDatabase()
                 .collection(User.COLLECTION_DATABASE_NAME)
                 .add(newUser);

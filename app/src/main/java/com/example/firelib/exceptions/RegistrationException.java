@@ -1,4 +1,4 @@
-package com.example.firelib.Exceptions;
+package com.example.firelib.exceptions;
 
 import java.util.List;
 

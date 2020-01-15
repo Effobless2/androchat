@@ -1,4 +1,4 @@
-package com.example.firelib.Exceptions;
+package com.example.firelib.exceptions;
 
 public enum RegistrationErrors{
     LOGIN_NOT_IN_CORRECT_FORMAT, //Login didn't respects Format rules

@@ -1,11 +1,12 @@
-package com.example.firelib;
+package com.example.firelib.managers;
 
 import android.os.AsyncTask;
 
 import androidx.annotation.NonNull;
 
-import com.example.firelib.Exceptions.RegistrationErrors;
-import com.example.firelib.Exceptions.RegistrationException;
+import com.example.firelib.DAL.UserDAL;
+import com.example.firelib.exceptions.RegistrationErrors;
+import com.example.firelib.exceptions.RegistrationException;
 import com.example.model.User;
 import com.example.model.UserRegistration;
 import com.google.android.gms.tasks.Continuation;
