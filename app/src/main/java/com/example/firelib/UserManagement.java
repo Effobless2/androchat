@@ -94,4 +94,9 @@ public class UserManagement {
         task.execute();
         return task.getTask();
     }
+
+    public static boolean loginOrPseudoValidation(String text){
+        if(text.contains(" ")) return false;
+        return true;
+    }
 }

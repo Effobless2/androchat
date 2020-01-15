@@ -4,6 +4,8 @@ import android.os.AsyncTask;
 
 import androidx.annotation.NonNull;
 
+import com.example.firelib.Exceptions.RegistrationErrors;
+import com.example.firelib.Exceptions.RegistrationException;
 import com.example.model.User;
 import com.example.model.UserRegistration;
 import com.google.android.gms.tasks.Continuation;
@@ -11,9 +13,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.TaskCompletionSource;
 import com.google.firebase.firestore.DocumentReference;
 
+import java.util.ArrayList;
 import java.util.List;
 
-class RegistrationAsyncTask extends AsyncTask<Void, Void, TaskCompletionSource<String>> {
+class RegistrationAsyncTask extends AsyncTask<Void, Void, Void> {
+    private static final long INITIAL_TIMEOUT = 300_000;
     Task<Boolean> loginVerificationTask;
     Task<Boolean> pseudoVerifiedTask;
     UserRegistration newUser;
@@ -26,6 +30,9 @@ class RegistrationAsyncTask extends AsyncTask<Void, Void, TaskCompletionSource<S
     public RegistrationAsyncTask(UserRegistration newUser){
         result = new TaskCompletionSource<>();
         this.newUser = newUser;
+    }
+
+    private void initUnityVerificationTasks(){
         loginVerificationTask = UserManagement.getUserByLogin(newUser.getLogin())
                 .continueWith(new Continuation<List<User>, Boolean>() {
                     @Override
@@ -45,20 +52,70 @@ class RegistrationAsyncTask extends AsyncTask<Void, Void, TaskCompletionSource<S
     }
 
     @Override
-    protected TaskCompletionSource<String> doInBackground(Void... voids) {
-        while(!loginVerificationTask.isComplete() || !pseudoVerifiedTask.isComplete()){}
-        boolean verifLogin = loginVerificationTask.getResult();
-        boolean verifPseudo = pseudoVerifiedTask.getResult();
-        if(verifLogin && verifPseudo){
-            Task<DocumentReference> resultTask = UserDAL.register(newUser);
-            while(!resultTask.isComplete()){}
-            result.setResult(resultTask.getResult().getId());
+    protected Void doInBackground(Void... voids) {
+        boolean loginStrVerif = UserManagement.loginOrPseudoValidation(newUser.getLogin());
+        boolean pseudoStrVerif = UserManagement.loginOrPseudoValidation(newUser.getPseudo());
+
+        if(!loginStrVerif || !pseudoStrVerif){
+            List<RegistrationErrors> errors = new ArrayList<>();
+            if(!loginStrVerif)errors.add(RegistrationErrors.LOGIN_NOT_IN_CORRECT_FORMAT);
+            if(!pseudoStrVerif)errors.add(RegistrationErrors.PSEUDO_NOT_IN_CORRECT_FORMAT);
+            result.setException(new RegistrationException(errors));
             return null;
         }
-        result.setResult(null);
-        return null; //TODO: Throw Some Big Shits
+        try{
+            long timeout = INITIAL_TIMEOUT;
+            long currentH;
 
+            initUnityVerificationTasks();
+            currentH = System.currentTimeMillis();
+            while((!loginVerificationTask.isComplete() || !pseudoVerifiedTask.isComplete()) && timeout >= 0){
+                timeout -= System.currentTimeMillis() - currentH;
+                currentH = System.currentTimeMillis();
+            }
+
+            if(!loginVerificationTask.isComplete() || !pseudoVerifiedTask.isComplete()){
+                List<RegistrationErrors> errors = new ArrayList<>();
+                errors.add(RegistrationErrors.REQUEST_NOT_CACHED);
+                result.setException(new RegistrationException(errors));
+                return null;
+            }
+
+            boolean verifyLogin = loginVerificationTask.getResult();
+            boolean verifyPseudo = pseudoVerifiedTask.getResult();
+
+            if(!verifyLogin || !verifyPseudo){
+                List<RegistrationErrors> errors = new ArrayList<>();
+                if(!verifyLogin) errors.add(RegistrationErrors.LOGIN_ALREADY_USED);
+                if(!verifyPseudo) errors.add(RegistrationErrors.PSEUDO_ALREADY_USED);
+                result.setException(new RegistrationException(errors));
+                return null;
+            }
+
+            timeout = INITIAL_TIMEOUT;
+            Task<DocumentReference> resultTask = UserDAL.register(newUser);
+
+            currentH = System.currentTimeMillis();
+            while(!resultTask.isComplete() && timeout >= 0){
+                timeout -= System.currentTimeMillis() - currentH;
+                currentH = System.currentTimeMillis();
+            }
+
+            if(!resultTask.isComplete()){
+                List<RegistrationErrors> errors = new ArrayList<>();
+                errors.add(RegistrationErrors.REQUEST_CACHED);
+                result.setException(new RegistrationException(errors));
+                return null;
+            }
+
+            result.setResult(resultTask.getResult().getId());
+            return null;
+
+        } catch (Exception e){
+            List<RegistrationErrors> errors = new ArrayList<>();
+            errors.add(RegistrationErrors.SYSTEM_ERROR);
+            result.setException(new RegistrationException(errors));
+            return null;
+        }
     }
-
-
 }
