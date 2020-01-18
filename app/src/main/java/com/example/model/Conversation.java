@@ -15,8 +15,7 @@ public class Conversation {
     public Conversation() {
     }
 
-    public Conversation(String id, String name, Date last_message_date) {
-        this.id = id;
+    public Conversation(String name, Date last_message_date) {
         this.name = name;
         this.last_message_date = last_message_date;
     }

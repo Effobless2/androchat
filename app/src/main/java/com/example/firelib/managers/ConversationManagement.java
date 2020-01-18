@@ -7,6 +7,7 @@ import com.example.model.User;
 import com.example.model.UserRegistration;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -54,7 +55,6 @@ public class ConversationManagement {
                 });
     }
 
-
     public static Task<Conversation> getConversationById(String id){
         return ConversationDAL.getConversationById(id).get()
                 .continueWith(new Continuation<DocumentSnapshot, Conversation>() {
@@ -66,5 +66,15 @@ public class ConversationManagement {
                 });
     }
 
+    public static Task<String> create(Conversation newConv){
+        return ConversationDAL.createConversation(newConv)
+                .continueWith(new Continuation<DocumentReference, String>() {
+                    @Override
+                    public String then(@NonNull Task<DocumentReference> task) throws Exception {
+                        DocumentReference documentReference = task.getResult();
+                        return documentReference.getId().toString();
+                    }
+                });
+    }
 
 }

@@ -25,4 +25,10 @@ public class ConversationDAL {
                 .document(id);
     }
 
+    public static Task<DocumentReference> createConversation(Conversation conv){
+        return  DbConnect.getDatabase()
+                .collection(Conversation.COLLECTION_DATABASE_NAME)
+                .add(conv);
+    }
+
 }
