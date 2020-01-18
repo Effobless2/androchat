@@ -1,5 +1,11 @@
 package com.example.model;
 
+import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
+
+@Entity(tableName = "contacts")
 public class User {
     public static final String PASSWORD_DATABASE_FIELD = "password";
     public static String COLLECTION_DATABASE_NAME = "users";
@@ -9,13 +15,22 @@ public class User {
     public static String FIRSTNAME_DATABASE_FIELD = "firstname";
     public static String LASTNAME_DATABASE_FIELD = "lastname";
 
+
+    @PrimaryKey(autoGenerate = false)
+    @NonNull
+    private String id;
+
+    @NonNull
     private String login;
 
     private String firstname;
     private String lastname;
+
+    @NonNull
     private String pseudo;
 
 
+    @Ignore
     public User() {
     }
 
@@ -24,6 +39,14 @@ public class User {
         this.firstname = firstname;
         this.lastname = lastname;
         this.pseudo = pseudo;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getLogin() {
