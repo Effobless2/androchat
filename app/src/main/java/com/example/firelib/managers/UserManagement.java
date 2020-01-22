@@ -108,4 +108,5 @@ public class UserManagement {
         if(text.contains(" ")) return false;
         return true;
     }
+
 }
