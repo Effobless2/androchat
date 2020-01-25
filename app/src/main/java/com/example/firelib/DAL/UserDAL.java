@@ -24,13 +24,16 @@ public class UserDAL {
                 .whereEqualTo(User.GOOGLE_ID_FIREBASE_FIELD, googleId);
     }
 
-    public static Task<DocumentReference> register(String googleId){
-        User u = new User();
-        u.setGoogleId(googleId);
+    public static Task<DocumentReference> register(User user){
         return DbConnect.getDatabase()
                 .collection(User.COLLECTION_DATABASE_NAME)
-                .add(u);
+                .add(user);
     }
 
 
+    public static Query getUserByGoogleId(String googleId) {
+        return DbConnect.getDatabase()
+                .collection(User.COLLECTION_DATABASE_NAME)
+                .whereEqualTo(User.GOOGLE_ID_FIREBASE_FIELD, googleId);
+    }
 }

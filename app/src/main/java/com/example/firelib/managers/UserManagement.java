@@ -6,7 +6,6 @@ import com.example.firelib.DAL.UserDAL;
 import com.example.model.User;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -51,29 +50,10 @@ public class UserManagement {
                 });
     }
 
-    public static Task<String> connection(String googleId){
-        return UserDAL.connection(googleId).get()
-                .continueWith(new Continuation<QuerySnapshot, String>() {
-                    @Override
-                    public String then(@NonNull Task<QuerySnapshot> task) throws Exception {
-                        QuerySnapshot snapshot = task.getResult();
-                        List<DocumentSnapshot> documentSnapshots = snapshot.getDocuments();
-                        if (documentSnapshots.size() > 0){
-                            return documentSnapshots.get(0).getId();
-                        }
-                        return null;
-                    }
-                });
-    }
-
-    public static Task<String> registration(String googleId){
-        return UserDAL.register(googleId)
-                .continueWith(new Continuation<DocumentReference, String>() {
-                    @Override
-                    public String then(@NonNull Task<DocumentReference> task) throws Exception {
-                        return task.getResult().getId();
-                    }
-                });
+    public static Task<String> getDocumentRefenceByGoogleId(User user){
+        ConnectionAsyncTask task = new ConnectionAsyncTask(user);
+        task.execute();
+        return task.getTask();
     }
 
 }
