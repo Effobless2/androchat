@@ -16,4 +16,7 @@ public interface UserDAO {
 
     @Query("SELECT * FROM contacts")
     LiveData<List<User>> getAllContacts();
+
+    @Query("DELETE FROM contacts WHERE documentId = :documentId")
+    void remove(String documentId);
 }

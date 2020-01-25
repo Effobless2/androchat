@@ -4,9 +4,9 @@ import androidx.annotation.NonNull;
 
 import com.example.firelib.DAL.UserDAL;
 import com.example.model.User;
-import com.example.model.UserRegistration;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -40,38 +40,6 @@ public class UserManagement {
                 });
     }
 
-    public static Task<List<User>> getUserByLogin(String login){
-        return UserDAL.getUserByLogin(login).get()
-                .continueWith(new Continuation<QuerySnapshot, List<User>>() {
-                    @Override
-                    public List<User> then(@NonNull Task<QuerySnapshot> task) throws Exception {
-                        List<User> result = new ArrayList<>();
-                        QuerySnapshot snapshot = task.getResult();
-                        List<DocumentSnapshot> documentSnapshots = snapshot.getDocuments();
-                        for (DocumentSnapshot documentSnapshot : documentSnapshots) {
-                            result.add(documentSnapshot.toObject(User.class));
-                        }
-                        return result;
-                    }
-                });
-    }
-
-    public static Task<List<User>> getUserByPseudo(String pseudo){
-        return UserDAL.getUserByPseudo(pseudo).get()
-                .continueWith(new Continuation<QuerySnapshot, List<User>>() {
-                    @Override
-                    public List<User> then(@NonNull Task<QuerySnapshot> task) throws Exception {
-                        List<User> result = new ArrayList<>();
-                        QuerySnapshot snapshot = task.getResult();
-                        List<DocumentSnapshot> documentSnapshots = snapshot.getDocuments();
-                        for (DocumentSnapshot documentSnapshot : documentSnapshots) {
-                            result.add(documentSnapshot.toObject(User.class));
-                        }
-                        return result;
-                    }
-                });
-    }
-
     public static Task<User> getUserById(String id){
         return UserDAL.getUserById(id).get()
                 .continueWith(new Continuation<DocumentSnapshot, User>() {
@@ -83,8 +51,8 @@ public class UserManagement {
                 });
     }
 
-    public static Task<String> connection(String login, String password){
-        return UserDAL.connection(login, password).get()
+    public static Task<String> connection(String googleId){
+        return UserDAL.connection(googleId).get()
                 .continueWith(new Continuation<QuerySnapshot, String>() {
                     @Override
                     public String then(@NonNull Task<QuerySnapshot> task) throws Exception {
@@ -98,15 +66,14 @@ public class UserManagement {
                 });
     }
 
-    public static Task<String> registration(UserRegistration newUser){
-        RegistrationAsyncTask task = new RegistrationAsyncTask(newUser);
-        task.execute();
-        return task.getTask();
-    }
-
-    public static boolean loginOrPseudoValidation(String text){
-        if(text.contains(" ")) return false;
-        return true;
+    public static Task<String> registration(String googleId){
+        return UserDAL.register(googleId)
+                .continueWith(new Continuation<DocumentReference, String>() {
+                    @Override
+                    public String then(@NonNull Task<DocumentReference> task) throws Exception {
+                        return task.getResult().getId();
+                    }
+                });
     }
 
 }
