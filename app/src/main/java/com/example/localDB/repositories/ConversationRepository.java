@@ -84,7 +84,11 @@ public class ConversationRepository implements EventListener<QuerySnapshot> {
         @Override
         protected Void doInBackground(Conversation... conversations) {
             for (Conversation conversation : conversations) {
-                conversationDAO.insert(conversation);
+                try {
+                    conversationDAO.insert(conversation);
+                } catch (Exception e){
+
+                }
             }
             return null;
         }

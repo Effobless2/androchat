@@ -1,7 +1,16 @@
 package com.example.model;
 
+import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
+
+import com.example.model.converters.DateToLongConverter;
+
 import java.util.Date;
 
+@Entity(tableName = "messages")
+@TypeConverters(DateToLongConverter.class)
 public class Message {
 
     public static String COLLECTION_DATABASE_NAME = "messages";
@@ -10,7 +19,10 @@ public class Message {
     public static String DATE_DATABASE_FIELD = "date";
     public static String CONTENT_DATABASE_FIELD = "content";
 
+    @PrimaryKey(autoGenerate = false)
+    @NonNull
     private String id;
+
     private String id_conv;
     private String id_user;
     private Date date;

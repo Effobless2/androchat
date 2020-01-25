@@ -7,9 +7,10 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
 import com.example.model.Conversation;
+import com.example.model.Message;
 import com.example.model.User;
 
-@Database(entities = {User.class, Conversation.class}, version = 1)
+@Database(entities = {User.class, Conversation.class, Message.class}, version = 2)
 public abstract class DBConnect extends RoomDatabase {
     private static DBConnect INSTANCE;
 
@@ -23,4 +24,6 @@ public abstract class DBConnect extends RoomDatabase {
     public abstract UserDAO userDAO();
 
     public abstract ConversationDAO conversationDAO();
+
+    public abstract MessageDAO messageDAO();
 }
