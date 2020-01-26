@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Androchat</string>
+    <string name="notification_title"></string>
+    <string name="default_notification_channel_id">Androchat</string>
 </resources>
+
+
