@@ -9,9 +9,10 @@ import androidx.room.RoomDatabase;
 import com.example.model.Conversation;
 import com.example.model.Message;
 import com.example.model.RelContacts;
+import com.example.model.RelUserConv;
 import com.example.model.User;
 
-@Database(entities = {User.class, Conversation.class, Message.class, RelContacts.class}, version = 3)
+@Database(entities = {User.class, Conversation.class, Message.class, RelContacts.class, RelUserConv.class}, version = 3)
 public abstract class DBConnect extends RoomDatabase {
     private static DBConnect INSTANCE;
 
@@ -29,4 +30,6 @@ public abstract class DBConnect extends RoomDatabase {
     public abstract MessageDAO messageDAO();
 
     public abstract RelContactsDAO relContactsDAO();
+
+    public abstract RelUserConvDAO relUserConvDAO();
 }

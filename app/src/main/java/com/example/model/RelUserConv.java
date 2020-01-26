@@ -2,48 +2,61 @@ package com.example.model;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "rel_user_conv")
 public class RelUserConv {
 
+    public static final String COLLECTION_DATABASE_NAME = "rel_users_conv";
+
     @PrimaryKey(autoGenerate = false)
     @NonNull
-    private String documentId;
+    private String id;
 
-    private String convId;
-    private String userId;
+    private String id_conv;
+    private String id_users;
 
     public RelUserConv() {
     }
 
-    public RelUserConv(String documentId, String convId, String userId) {
-        this.documentId = documentId;
-        this.convId = convId;
-        this.userId = userId;
+    @Ignore
+    public RelUserConv(String id, String id_conv, String id_users) {
+        this.id = id;
+        this.id_conv = id_conv;
+        this.id_users = id_users;
     }
 
-    public String getDocumentId() {
-        return documentId;
+    public String getId() {
+        return id;
     }
 
-    public void setDocumentId(String documentId) {
-        this.documentId = documentId;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public String getConvId() {
-        return convId;
+    public String getId_conv() {
+        return id_conv;
     }
 
-    public void setConvId(String convId) {
-        this.convId = convId;
+    public void setId_conv(String id_conv) {
+        this.id_conv = id_conv;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getId_users() {
+        return id_users;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setId_users(String id_users) {
+        this.id_users = id_users;
+    }
+
+    @Override
+    public String toString() {
+        return "RelUserConv{" +
+                "id='" + id + '\'' +
+                ", id_conv='" + id_conv + '\'' +
+                ", id_users='" + id_users + '\'' +
+                '}';
     }
 }
