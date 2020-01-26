@@ -101,7 +101,11 @@ public class UserRepository implements EventListener<QuerySnapshot> {
         @Override
         protected Void doInBackground(User... users) {
             for (User user : users) {
-                userDAO.insert(user);
+                try{
+                    userDAO.insert(user);
+                } catch (Exception e){
+
+                }
             }
             return null;
         }

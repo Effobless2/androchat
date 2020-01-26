@@ -3,14 +3,16 @@ package com.example.model;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "rel_contacts")
 public class RelContacts {
+    public static final String COLLECTION_DATABASE_NAME = "rel_users";
 
     @PrimaryKey(autoGenerate = false)
     @NonNull
-    private String documentId;
+    private String id;
 
     private String from;
     private String to;
@@ -18,18 +20,19 @@ public class RelContacts {
     public RelContacts() {
     }
 
-    public RelContacts(String documentId, String from, String to) {
-        this.documentId = documentId;
+    @Ignore
+    public RelContacts(String id, String from, String to) {
+        this.id = id;
         this.from = from;
         this.to = to;
     }
 
-    public String getDocumentId() {
-        return documentId;
+    public String getId() {
+        return id;
     }
 
-    public void setDocumentId(String documentId) {
-        this.documentId = documentId;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getFrom() {
@@ -46,5 +49,14 @@ public class RelContacts {
 
     public void setTo(String to) {
         this.to = to;
+    }
+
+    @Override
+    public String toString() {
+        return "RelContacts{" +
+                "documentId='" + id + '\'' +
+                ", from='" + from + '\'' +
+                ", to='" + to + '\'' +
+                '}';
     }
 }

@@ -2,6 +2,7 @@ package com.example.model;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
@@ -26,6 +27,7 @@ public class Conversation {
     public Conversation() {
     }
 
+    @Ignore
     public Conversation(String name, Date last_message_date) {
         this.name = name;
         this.last_message_date = last_message_date;

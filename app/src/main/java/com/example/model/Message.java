@@ -2,6 +2,7 @@ package com.example.model;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 
@@ -31,6 +32,7 @@ public class Message {
     public Message() {
     }
 
+    @Ignore
     public Message(String id_conv, String id_user, Date date, String content) {
         this.id_conv = id_conv;
         this.id_user = id_user;
