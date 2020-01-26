@@ -1,8 +1,7 @@
-package com.example.localDB.repositories.relUsersRepository;
+package com.example.localDB.repositories.relUsersRepositories;
 
 import android.content.Context;
 
-import com.example.firelib.DAL.RelContactsDAL;
 import com.example.firelib.DAL.UserDAL;
 import com.example.localDB.repositories.userRepositories.UserDataListenerRepository;
 import com.example.model.RelContacts;

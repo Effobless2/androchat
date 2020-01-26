@@ -1,4 +1,4 @@
-package com.example.localDB.repositories;
+package com.example.localDB.repositories.conversationRepositories;
 
 import android.content.Context;
 import android.os.AsyncTask;
@@ -6,7 +6,7 @@ import android.os.AsyncTask;
 import androidx.lifecycle.LiveData;
 
 import com.example.firelib.DAL.ConversationDAL;
-import com.example.localDB.DAO.ConversationDAO;
+import com.example.localDB.DAO.conversationDAO.ConversationDataUpdatesDAO;
 import com.example.localDB.DAO.DBConnect;
 import com.example.model.Conversation;
 import com.google.firebase.firestore.DocumentChange;
@@ -20,13 +20,13 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-public class ConversationRepository implements EventListener<QuerySnapshot> {
-    private ConversationDAO conversationDAO;
+public class ConversationDataListenerRepository implements EventListener<QuerySnapshot> {
+    private ConversationDataUpdatesDAO conversationDataUpdatesDAO;
     private Query query;
     private ListenerRegistration registration;
 
-    public ConversationRepository(Context context) {
-        this.conversationDAO = DBConnect.getInstance(context).conversationDAO();
+    public ConversationDataListenerRepository(Context context) {
+        this.conversationDataUpdatesDAO = DBConnect.getInstance(context).conversationDataUpdatesDAO();
         this.query = ConversationDAL.getAllConversation();
         startQuery();
     }
@@ -59,33 +59,29 @@ public class ConversationRepository implements EventListener<QuerySnapshot> {
     }
 
     private void update(Conversation conversation) {
-        new UpdateAsyncTask(conversationDAO).execute(conversation);
+        new UpdateAsyncTask(conversationDataUpdatesDAO).execute(conversation);
     }
 
     private void remove(Conversation conversation) {
-        new RemoveAsyncTask(conversationDAO).execute(conversation);
+        new RemoveAsyncTask(conversationDataUpdatesDAO).execute(conversation);
     }
 
     private void insert(Conversation conversation ) {
-        new InsertAsyncTask(conversationDAO).execute(conversation);
-    }
-
-    public LiveData<List<Conversation>> getAllConversations(){
-        return conversationDAO.getAllConversations();
+        new InsertAsyncTask(conversationDataUpdatesDAO).execute(conversation);
     }
 
     public static class InsertAsyncTask extends AsyncTask<Conversation, Void, Void>{
-        private ConversationDAO conversationDAO;
+        private ConversationDataUpdatesDAO conversationDataUpdatesDAO;
 
-        public InsertAsyncTask(ConversationDAO conversationDAO) {
-            this.conversationDAO = conversationDAO;
+        public InsertAsyncTask(ConversationDataUpdatesDAO conversationDataUpdatesDAO) {
+            this.conversationDataUpdatesDAO = conversationDataUpdatesDAO;
         }
 
         @Override
         protected Void doInBackground(Conversation... conversations) {
             for (Conversation conversation : conversations) {
                 try {
-                    conversationDAO.insert(conversation);
+                    conversationDataUpdatesDAO.insert(conversation);
                 } catch (Exception e){
 
                 }
@@ -95,32 +91,32 @@ public class ConversationRepository implements EventListener<QuerySnapshot> {
     }
 
     public static class RemoveAsyncTask extends AsyncTask<Conversation, Void, Void>{
-        private ConversationDAO conversationDAO;
+        private ConversationDataUpdatesDAO conversationDataUpdatesDAO;
 
-        public RemoveAsyncTask(ConversationDAO conversationDAO) {
-            this.conversationDAO = conversationDAO;
+        public RemoveAsyncTask(ConversationDataUpdatesDAO conversationDataUpdatesDAO) {
+            this.conversationDataUpdatesDAO = conversationDataUpdatesDAO;
         }
 
         @Override
         protected Void doInBackground(Conversation... conversations) {
             for (Conversation conversation : conversations) {
-                conversationDAO.remove(conversation.getId());
+                conversationDataUpdatesDAO.remove(conversation);
             }
             return null;
         }
     }
 
     public static class UpdateAsyncTask extends AsyncTask<Conversation, Void, Void>{
-        private ConversationDAO conversationDAO;
+        private ConversationDataUpdatesDAO conversationDataUpdatesDAO;
 
-        public UpdateAsyncTask(ConversationDAO conversationDAO) {
-            this.conversationDAO = conversationDAO;
+        public UpdateAsyncTask(ConversationDataUpdatesDAO conversationDataUpdatesDAO) {
+            this.conversationDataUpdatesDAO = conversationDataUpdatesDAO;
         }
 
         @Override
         protected Void doInBackground(Conversation... conversations) {
             for (Conversation conversation : conversations) {
-                conversationDAO.update(conversation);
+                conversationDataUpdatesDAO.update(conversation);
             }
             return null;
         }
