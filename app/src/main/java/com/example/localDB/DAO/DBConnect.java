@@ -6,6 +6,8 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
+import com.example.localDB.DAO.UserDAO.UserDataAccessDAO;
+import com.example.localDB.DAO.UserDAO.UserDataUpdatesDAO;
 import com.example.model.Conversation;
 import com.example.model.Message;
 import com.example.model.RelContacts;
@@ -23,13 +25,13 @@ public abstract class DBConnect extends RoomDatabase {
         return INSTANCE;
     }
 
-    public abstract UserDAO userDAO();
+    public abstract UserDataAccessDAO userDataAccessDAO();
+
+    public abstract UserDataUpdatesDAO userDataUpdatesDAO();
 
     public abstract ConversationDAO conversationDAO();
 
     public abstract MessageDAO messageDAO();
-
-    public abstract RelContactsDAO relContactsDAO();
 
     public abstract RelUserConvDAO relUserConvDAO();
 }

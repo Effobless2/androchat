@@ -1,13 +1,10 @@
-package com.example.localDB.repositories;
+package com.example.localDB.repositories.userRepositories;
 
 import android.content.Context;
 import android.os.AsyncTask;
 
-import androidx.lifecycle.LiveData;
-
-import com.example.firelib.DAL.UserDAL;
 import com.example.localDB.DAO.DBConnect;
-import com.example.localDB.DAO.UserDAO;
+import com.example.localDB.DAO.UserDAO.UserDataUpdatesDAO;
 import com.example.model.User;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.EventListener;
@@ -16,19 +13,19 @@ import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.util.List;
-
 import javax.annotation.Nullable;
 
-public class UserRepository implements EventListener<QuerySnapshot> {
-    private UserDAO userDAO;
+public class UserDataListenerRepository implements EventListener<QuerySnapshot> {
+    private Context context;
+    private UserDataUpdatesDAO userDataAccessDAO;
     private Query query;
     private ListenerRegistration registration;
 
-    public UserRepository(Context context) {
+    public UserDataListenerRepository(Context context, Query query) {
+        this.context = context;
         DBConnect database = DBConnect.getInstance(context);
-        userDAO = database.userDAO();
-        this.query = UserDAL.getAllUser();
+        userDataAccessDAO = database.userDataUpdatesDAO();
+        this.query = query;
         startQuery();
     }
 
@@ -44,15 +41,12 @@ public class UserRepository implements EventListener<QuerySnapshot> {
             registration = null;
         }
     }
-    public LiveData<List<User>> getAllContacts() {
-        return userDAO.getAllContacts();
-    }
 
     public void insert(User user) {
-        new InsertAsyncTask(userDAO).execute(user);
+        new InsertAsyncTask(userDataAccessDAO).execute(user);
     }
 
-    public void remove(String userId){ new  RemoveAsyncTask(userDAO).execute(userId); }
+    public void remove(User user){ new  RemoveAsyncTask(userDataAccessDAO).execute(user); }
 
     @Override
     public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots,
@@ -61,48 +55,47 @@ public class UserRepository implements EventListener<QuerySnapshot> {
             return; //TODO : Handle Exception
         }
         for (DocumentChange documentChange : queryDocumentSnapshots.getDocumentChanges()) {
+            User u = documentChange.getDocument().toObject(User.class);
+            u.setDocumentId(documentChange.getDocument().getId());
             switch (documentChange.getType()){
                 case ADDED:
-                    User u = new User();
-                    u.setGoogleId(documentChange.getDocument().toObject(User.class).getGoogleId());
-                    u.setDocumentId(documentChange.getDocument().getId());
                     this.insert(u);
                     break;
                 case REMOVED:
-                    remove(documentChange.getDocument().getId().toString());
+                    remove(u);
                     break;
             }
         }
     }
 
-    public static class RemoveAsyncTask extends AsyncTask<String, Void, Void>{
-        private UserDAO userDAO;
+    public static class RemoveAsyncTask extends AsyncTask<User, Void, Void>{
+        private UserDataUpdatesDAO userDataUpdatesDAO;
 
-        public RemoveAsyncTask(UserDAO userDAO) {
-            this.userDAO = userDAO;
+        public RemoveAsyncTask(UserDataUpdatesDAO userDataUpdatesDAO) {
+            this.userDataUpdatesDAO = userDataUpdatesDAO;
         }
 
         @Override
-        protected Void doInBackground(String... userIds) {
-            for (String userId : userIds) {
-                userDAO.remove(userId);
+        protected Void doInBackground(User... users) {
+            for (User user : users) {
+                userDataUpdatesDAO.remove(user);
             }
             return null;
         }
     }
 
     public static class InsertAsyncTask extends AsyncTask<User, Void, Void> {
-        private UserDAO userDAO;
+        private UserDataUpdatesDAO userDataUpdatesDAO;
 
-        public InsertAsyncTask(UserDAO userDAO) {
-            this.userDAO = userDAO;
+        public InsertAsyncTask(UserDataUpdatesDAO userDataUpdatesDAO) {
+            this.userDataUpdatesDAO = userDataUpdatesDAO;
         }
 
         @Override
         protected Void doInBackground(User... users) {
             for (User user : users) {
                 try{
-                    userDAO.insert(user);
+                    userDataUpdatesDAO.insert(user);
                 } catch (Exception e){
 
                 }
