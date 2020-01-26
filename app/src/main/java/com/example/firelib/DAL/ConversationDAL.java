@@ -1,5 +1,6 @@
 package com.example.firelib.DAL;
 
+import com.example.localDB.DAO.DBConnect;
 import com.example.model.Conversation;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;

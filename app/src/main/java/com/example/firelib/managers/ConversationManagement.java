@@ -1,10 +1,9 @@
 package com.example.firelib.managers;
 
+import androidx.annotation.NonNull;
+
 import com.example.firelib.DAL.ConversationDAL;
-import com.example.firelib.DAL.UserDAL;
 import com.example.model.Conversation;
-import com.example.model.User;
-import com.example.model.UserRegistration;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
@@ -13,8 +12,6 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import androidx.annotation.NonNull;
 
 public class ConversationManagement {
     private static final String LOG_CATEGORY = "ConversationManagement";
