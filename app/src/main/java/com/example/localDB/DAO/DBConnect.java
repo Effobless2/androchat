@@ -10,6 +10,8 @@ import com.example.localDB.DAO.UserDAO.UserDataAccessDAO;
 import com.example.localDB.DAO.UserDAO.UserDataUpdatesDAO;
 import com.example.localDB.DAO.conversationDAO.ConversationDataAccessDAO;
 import com.example.localDB.DAO.conversationDAO.ConversationDataUpdatesDAO;
+import com.example.localDB.DAO.messagesDAO.MessageDataAccessDAO;
+import com.example.localDB.DAO.messagesDAO.MessageDataUpdatesDAO;
 import com.example.model.Conversation;
 import com.example.model.Message;
 import com.example.model.RelContacts;
@@ -33,7 +35,6 @@ public abstract class DBConnect extends RoomDatabase {
     public abstract ConversationDataAccessDAO conversationDataAccessDAO();
     public abstract ConversationDataUpdatesDAO conversationDataUpdatesDAO();
 
-    public abstract MessageDAO messageDAO();
-
-    public abstract RelUserConvDAO relUserConvDAO();
+    public abstract MessageDataUpdatesDAO messageDataUpdatesDAO();
+    public abstract MessageDataAccessDAO messageDataAccessDAO();
 }
