@@ -58,7 +58,9 @@ public class ConversationManagement {
                     @Override
                     public Conversation then(@NonNull Task<DocumentSnapshot> task) throws Exception {
                         DocumentSnapshot snapshot = task.getResult();
-                        return snapshot.toObject(Conversation.class);
+                        Conversation conversation = snapshot.toObject(Conversation.class);
+                        conversation.setId(snapshot.getId());
+                        return conversation;
                     }
                 });
     }

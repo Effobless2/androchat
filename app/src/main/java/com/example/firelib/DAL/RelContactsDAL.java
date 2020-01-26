@@ -5,8 +5,9 @@ import com.google.firebase.firestore.Query;
 
 public class RelContactsDAL {
 
-    public static Query getAllContacts(){
+    public static Query getAllContactsOfCurrentGoogleUser(String googleId){
         return DbConnect.getDatabase()
-                .collection(RelContacts.COLLECTION_DATABASE_NAME);
+                .collection(RelContacts.COLLECTION_DATABASE_NAME)
+                .whereEqualTo("from", googleId);
     }
 }

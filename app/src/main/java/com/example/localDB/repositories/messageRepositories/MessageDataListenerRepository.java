@@ -1,13 +1,11 @@
-package com.example.localDB.repositories;
+package com.example.localDB.repositories.messageRepositories;
 
 import android.content.Context;
 import android.os.AsyncTask;
 
-import androidx.lifecycle.LiveData;
-
 import com.example.firelib.DAL.MessageDAL;
 import com.example.localDB.DAO.DBConnect;
-import com.example.localDB.DAO.MessageDAO;
+import com.example.localDB.DAO.messagesDAO.MessageDataUpdatesDAO;
 import com.example.model.Message;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.EventListener;
@@ -16,18 +14,16 @@ import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.util.List;
-
 import javax.annotation.Nullable;
 
-public class MessageRepository implements EventListener<QuerySnapshot> {
-    private MessageDAO messageDAO;
+public class MessageDataListenerRepository implements EventListener<QuerySnapshot> {
+    private MessageDataUpdatesDAO messageDataUpdatesDAO;
     private Query query;
     private ListenerRegistration registration;
 
-    public MessageRepository(Context context){
-        messageDAO = DBConnect.getInstance(context).messageDAO();
-        this.query = MessageDAL.getAllMessage();
+    public MessageDataListenerRepository(Context context, Query query){
+        messageDataUpdatesDAO = DBConnect.getInstance(context).messageDataUpdatesDAO();
+        this.query = query;
         startQuery();
     }
 
@@ -37,20 +33,16 @@ public class MessageRepository implements EventListener<QuerySnapshot> {
         }
     }
 
-    public LiveData<List<Message>> getAllMessages(){
-        return messageDAO.getAllMessages();
-    }
-
     private void update(Message message) {
-        new UpdateAsyncTask(messageDAO).execute(message);
+        new UpdateAsyncTask(messageDataUpdatesDAO).execute(message);
     }
 
     private void remove(Message message) {
-        new RemoveAsyncTask(messageDAO).execute(message);
+        new RemoveAsyncTask(messageDataUpdatesDAO).execute(message);
     }
 
     private void insert(Message message) {
-        new InsertAsyncTask(messageDAO).execute(message);
+        new InsertAsyncTask(messageDataUpdatesDAO).execute(message);
     }
 
     @Override
@@ -76,17 +68,17 @@ public class MessageRepository implements EventListener<QuerySnapshot> {
     }
 
     public static class InsertAsyncTask extends AsyncTask<Message, Void, Void>{
-        private MessageDAO messageDAO;
+        private MessageDataUpdatesDAO messageDataUpdatesDAO;
 
-        public InsertAsyncTask(MessageDAO messageDAO) {
-            this.messageDAO = messageDAO;
+        public InsertAsyncTask(MessageDataUpdatesDAO messageDataUpdatesDAO) {
+            this.messageDataUpdatesDAO = messageDataUpdatesDAO;
         }
 
         @Override
         protected Void doInBackground(Message... messages) {
             for (Message message : messages) {
                 try {
-                    messageDAO.insert(message);
+                    messageDataUpdatesDAO.insert(message);
                 } catch (Exception e){
 
                 }
@@ -96,32 +88,32 @@ public class MessageRepository implements EventListener<QuerySnapshot> {
     }
 
     public static class RemoveAsyncTask extends AsyncTask<Message, Void, Void>{
-        private MessageDAO messageDAO;
+        private MessageDataUpdatesDAO messageDataUpdatesDAO;
 
-        public RemoveAsyncTask(MessageDAO messageDAO) {
-            this.messageDAO = messageDAO;
+        public RemoveAsyncTask(MessageDataUpdatesDAO messageDataUpdatesDAO) {
+            this.messageDataUpdatesDAO = messageDataUpdatesDAO;
         }
 
         @Override
         protected Void doInBackground(Message... messages) {
             for (Message message : messages) {
-                messageDAO.delete(message);
+                messageDataUpdatesDAO.delete(message);
             }
             return null;
         }
     }
 
     public static class UpdateAsyncTask extends AsyncTask<Message, Void, Void>{
-        private MessageDAO messageDAO;
+        private MessageDataUpdatesDAO messageDataUpdatesDAO;
 
-        public UpdateAsyncTask(MessageDAO messageDAO) {
-            this.messageDAO = messageDAO;
+        public UpdateAsyncTask(MessageDataUpdatesDAO messageDataUpdatesDAO) {
+            this.messageDataUpdatesDAO = messageDataUpdatesDAO;
         }
 
         @Override
         protected Void doInBackground(Message... messages) {
             for (Message message : messages) {
-                messageDAO.update(message);
+                messageDataUpdatesDAO.update(message);
             }
             return null;
         }
