@@ -11,7 +11,6 @@ import android.widget.Toast;
 
 import com.example.androchat.MainActivity;
 import com.example.androchat.R;
-import com.example.androchat.anotherActivityToCreate.TemporaryActivity;
 import com.example.firelib.managers.UserManagement;
 import com.example.model.User;
 import com.firebase.ui.auth.AuthUI;
@@ -49,7 +48,7 @@ public class SignInActivity extends AppCompatActivity {
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if(user != null){
-            Intent intent = new Intent(this, TemporaryActivity.class);
+            Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         }
 
@@ -78,14 +77,14 @@ public class SignInActivity extends AppCompatActivity {
                             public String then(@NonNull Task<String> task) throws Exception {
                                 String result = task.getResult();
                                 if(result == null){
-                                    ((TextView) findViewById(R.id.textView)).setText("Error");
+                                    //((TextView) findViewById(R.id.textView)).setText("Error");
                                 } else {
-                                    ((TextView) findViewById(R.id.textView)).setText(result);
+                                    //((TextView) findViewById(R.id.textView)).setText(result);
                                 }
                                 return null;
                             }
                         });
-                Intent intent = new Intent(this, TemporaryActivity.class);
+                Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
                 // ...
             } else {
