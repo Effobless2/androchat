@@ -27,6 +27,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-firestore:17.1.5'
     implementation 'com.google.firebase:firebase-core:17.2.2'
     implementation 'com.google.firebase:firebase-messaging:20.1.0'
+    implementation 'com.loopj.android:android-async-http:1.4.9'
 
     implementation 'com.firebaseui:firebase-ui-auth:6.2.0'
     implementation 'android.arch.persistence.room:runtime:1.1.1'
