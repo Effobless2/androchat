@@ -56,6 +56,9 @@ public class MainActivity extends AppCompatActivity implements addFriendFragment
     }
 
     public void searchFirendOnClic(View view) {
+        TextView title = (TextView) findViewById(R.id.title);
+        title.setText("Recherche d'amis");
+
         Log.v("CLIC : ","button recherche ami");
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();

@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import com.example.androchat.R;
@@ -15,6 +17,7 @@ import com.example.firelib.managers.UserManagement;
 import com.example.model.User;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,8 +79,37 @@ public class SearchUserFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_search_user, container, false);
+        View view = inflater.inflate(R.layout.fragment_search_user, container, false);
+        Button button = (Button) view.findViewById(R.id.btn_search_user);
+        button.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                EditText mEdit = (EditText)getView().findViewById(R.id.edit_text_id);
+                String googleId = mEdit.getText().toString();
+                UserManagement.getUserByGoogleId("c83aZGZzwZbXEVGRFep6bGPgKHw1")      //TODO: googleId écrit en dur, supprimé cette ligne et modifier le parametre par googleId
+                        .continueWith(new Continuation<List<User>, List<User>>() {
+                            @Override
+                            public List<User> then(@NonNull Task<List<User>> task) throws Exception{
+                                List<User> result = task.getResult();
+                                if(result.size() > 0) {
+                                    ListView listView = (ListView) getView().findViewById(R.id.list_user);
+                                    ArrayAdapter<User> listViewAdapter = new ArrayAdapter<User>(
+                                            getActivity(),
+                                            android.R.layout.simple_list_item_1,
+                                            result
+                                    );
+                                    listView.setAdapter(listViewAdapter);
+                                }else {
+                                    getAllUser();
+                                }
+                                return result;
+                            }
+                        });
+            }
+        });
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -89,7 +121,6 @@ public class SearchUserFragment extends Fragment {
 
     @Override
     public void onResume() {
-
         super.onResume();
         getAllUser();
     }
@@ -143,29 +174,4 @@ public class SearchUserFragment extends Fragment {
                     }
                 });
     }
-
-    /*
-        public List<User> getAllUser(){
-        //String psd = ((TextView) findViewById(R.id.textViewUser)).getText().toString();
-        UserManagement.getAllUser()
-                .continueWith(new Continuation<List<User>, List<User>>() {
-                    @Override
-                    public List<User> then(@NonNull Task<List<User>> task) throws Exception{
-                        List<User> result = task.getResult();
-                        /*TextView tv = ((TextView) getView().findViewById(R.id.textViewUser));
-                        tv.setText("");
-                        for (User user : result) {
-        //tv.setText(tv.getText() + user.getGoogleId());
-        Log.v("HHHHHHHHHH: ", user.toString());
-    }
-                        return result;
-    // return new UserAdapter(getActivity().getApplicationContext(), result);
-}
-                });
-                        List<User> userList = new ArrayList<>();
-        return userList;
-        }
-     */
-
-
 }
