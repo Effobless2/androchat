@@ -2,6 +2,7 @@ package com.example.localDB.repositories.messageRepositories;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.example.firelib.DAL.MessageDAL;
 import com.example.localDB.DAO.DBConnect;
@@ -55,6 +56,7 @@ public class MessageDataListenerRepository implements EventListener<QuerySnapsho
             message.setId(documentChange.getDocument().getId());
             switch (documentChange.getType()){
                 case ADDED:
+                    Log.i("SERVICE_LOG", "message added" + message.getContent());
                     insert(message);
                     break;
                 case REMOVED:

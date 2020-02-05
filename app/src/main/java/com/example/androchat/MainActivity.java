@@ -5,27 +5,79 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.ComponentName;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import com.example.androchat.authentication.SignInActivity;
+import com.example.baseWatcherService.BaseListenerService;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Date;
 
 public class MainActivity extends AppCompatActivity implements MainFragment.OnFragmentInteractionListener {
 
+    private boolean isBound = false;
+    private BaseListenerService.ServiceBinder binder;
+    private ServiceConnection serviceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            isBound = true;
+            binder = (BaseListenerService.ServiceBinder) service;
+            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            binder.setGoogleId(user.getUid());
+            binder.startListening();
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            isBound = false;
+            binder = null;
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        findViewById(R.id.getInc).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String currentIncrement = binder.getGoogleId();
+                Toast.makeText(
+                        getApplicationContext(),
+                        "Current Increment : " + currentIncrement,
+                        Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (null == binder) {
+            Intent intent = new Intent(this, BaseListenerService.class);
+            startService(intent);
+            Toast.makeText(this, "Start Service", Toast.LENGTH_LONG).show();
+        }
+        if(!isBound){
+            Intent intent = new Intent(getApplicationContext(), BaseListenerService.class);
+            bindService(intent, serviceConnection, BIND_AUTO_CREATE);
+            Toast.makeText(getApplicationContext(),"Bind Service", Toast.LENGTH_LONG).show();
+        } else {
+        }
     }
 
     @Override
