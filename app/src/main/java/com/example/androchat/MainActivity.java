@@ -1,22 +1,23 @@
 package com.example.androchat;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.androchat.authentication.SignInActivity;
+import com.example.androchat.friendRequest.SearchUserFragment;
+import com.example.androchat.friendRequest.addFriendFragment;
 import com.example.baseWatcherService.BaseListenerService;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -24,9 +25,10 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import java.util.Date;
-
-public class MainActivity extends AppCompatActivity implements MainFragment.OnFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity implements
+        addFriendFragment.OnFragmentInteractionListener,
+        MainFragment.OnFragmentInteractionListener,
+        SearchUserFragment.OnFragmentInteractionListener {
 
     private boolean isBound = false;
     private BaseListenerService.ServiceBinder binder;
@@ -46,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements MainFragment.OnFr
             binder = null;
         }
     };
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,9 +121,16 @@ public class MainActivity extends AppCompatActivity implements MainFragment.OnFr
     }
 
     public void searchFirendOnClic(View view) {
-        Log.v("CLIC : ","button recherche ami");
-    }
+        TextView title = (TextView) findViewById(R.id.title);
+        title.setText("Recherche d'amis");
 
+        Log.v("CLIC : ","button recherche ami");
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        //ft.replace(R.id.fragmentMain, new addFriendFragment());
+        ft.replace(R.id.fragmentMain, new SearchUserFragment());
+        ft.commit();
+    }
 
     @Override
     public void onFragmentInteraction(Uri uri) {
