@@ -4,6 +4,7 @@ package com.example.localDB.DAO.UserDAO;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
+import androidx.room.Query;
 import androidx.room.Update;
 
 import com.example.model.Conversation;
@@ -20,4 +21,7 @@ public interface UserDataUpdatesDAO {
 
     @Update
     void update(Conversation conversation);
+
+    @Query("DELETE FROM contacts")
+    void removeAll();
 }

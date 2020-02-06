@@ -51,13 +51,6 @@ public class SignInActivity extends AppCompatActivity {
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         }
-
-
-/*
-
-
-
-        });*/
 }
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -68,7 +61,7 @@ public class SignInActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) {
                 // Successfully signed in
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                Toast.makeText(this, user.getUid(), Toast.LENGTH_LONG).show();
+                //Toast.makeText(this, user.getUid(), Toast.LENGTH_LONG).show();
                 User u = new User();
                 u.setGoogleId(user.getUid());
                 UserManagement.getDocumentRefenceByGoogleId(u)

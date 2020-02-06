@@ -8,7 +8,12 @@ import android.os.IBinder;
 import android.util.Log;
 
 import com.example.firelib.DAL.RelUserConvDAL;
+import com.example.localDB.DAO.DBConnect;
 import com.example.localDB.repositories.relUsersConversationsRepositories.RelUsersConversationsRepository;
+import com.example.localDB.repositories.relUsersRepositories.RelUsersRepository;
+import com.example.model.RelContacts;
+
+import static com.example.firelib.DAL.RelContactsDAL.getAllContactsOfCurrentGoogleUser;
 
 public class BaseListenerService extends Service {
     private String googleId;
@@ -41,6 +46,23 @@ public class BaseListenerService extends Service {
         else{
             Log.i("SERVICE_LOG", "started");
             new RelUsersConversationsRepository(context, RelUserConvDAL.getAllRelationForUserByGoogleId(googleId));
+            new RelUsersRepository(context, getAllContactsOfCurrentGoogleUser(googleId));
+        }
+    }
+
+    public void cleanDatabase(){
+        if(context != null){
+            Runnable thread = new Runnable() {
+                @Override
+                public void run() {
+                    DBConnect.getInstance(context).userDataUpdatesDAO().removeAll();
+                    DBConnect.getInstance(context).conversationDataUpdatesDAO().removeAll();
+                    DBConnect.getInstance(context).messageDataUpdatesDAO().removeAll();
+                    Log.i("SERVICE_LOG", "removed");
+                }
+            };
+            new Thread(thread).start();
+
         }
     }
 
@@ -56,6 +78,10 @@ public class BaseListenerService extends Service {
         public void startListening(){
             Log.i("SERVICE_LOG", "start");
             onStartListening();
+        }
+
+        public void removeAll() {
+            cleanDatabase();
         }
     }
 }

@@ -51,17 +51,6 @@ public class MainActivity extends AppCompatActivity implements MainFragment.OnFr
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        findViewById(R.id.getInc).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String currentIncrement = binder.getGoogleId();
-                Toast.makeText(
-                        getApplicationContext(),
-                        "Current Increment : " + currentIncrement,
-                        Toast.LENGTH_LONG).show();
-            }
-        });
     }
 
     @Override
@@ -69,15 +58,34 @@ public class MainActivity extends AppCompatActivity implements MainFragment.OnFr
         super.onStart();
         if (null == binder) {
             Intent intent = new Intent(this, BaseListenerService.class);
-            startService(intent);
-            Toast.makeText(this, "Start Service", Toast.LENGTH_LONG).show();
+            try{
+                startService(intent);
+            } catch (Exception e){
+
+            }
         }
+        bind();
+    }
+
+    private void bind(){
         if(!isBound){
             Intent intent = new Intent(getApplicationContext(), BaseListenerService.class);
             bindService(intent, serviceConnection, BIND_AUTO_CREATE);
-            Toast.makeText(getApplicationContext(),"Bind Service", Toast.LENGTH_LONG).show();
-        } else {
         }
+    }
+
+    private void unbind(){
+        if(isBound){
+            isBound = false;
+            binder = null;
+            unbindService(serviceConnection);
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unbind();
     }
 
     @Override
@@ -91,12 +99,14 @@ public class MainActivity extends AppCompatActivity implements MainFragment.OnFr
                 .signOut(getApplicationContext())
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     public void onComplete(@NonNull Task<Void> task) {
-                        Toast.makeText(getApplicationContext(), "Signed Out", Toast.LENGTH_SHORT).show();
-
                         Intent intent = new Intent(getApplicationContext(), SignInActivity.class);
                         startActivity(intent);
                     }
                 });
+        if (null != binder){
+            binder.removeAll();
+            unbind();
+        }
     }
 
     public void contactOnClic(View view) {
