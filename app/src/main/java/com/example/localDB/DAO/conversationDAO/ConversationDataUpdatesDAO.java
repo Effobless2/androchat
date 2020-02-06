@@ -3,6 +3,7 @@ package com.example.localDB.DAO.conversationDAO;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
+import androidx.room.Query;
 import androidx.room.Update;
 
 import com.example.model.Conversation;
@@ -18,4 +19,7 @@ public interface ConversationDataUpdatesDAO {
 
     @Update
     void update(Conversation conversation);
+
+    @Query("DELETE FROM conversations")
+    void removeAll();
 }

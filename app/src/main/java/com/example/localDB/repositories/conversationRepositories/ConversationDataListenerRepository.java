@@ -6,8 +6,10 @@ import android.os.AsyncTask;
 import androidx.lifecycle.LiveData;
 
 import com.example.firelib.DAL.ConversationDAL;
+import com.example.firelib.DAL.MessageDAL;
 import com.example.localDB.DAO.conversationDAO.ConversationDataUpdatesDAO;
 import com.example.localDB.DAO.DBConnect;
+import com.example.localDB.repositories.messageRepositories.MessageDataListenerRepository;
 import com.example.model.Conversation;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.EventListener;
@@ -25,9 +27,9 @@ public class ConversationDataListenerRepository implements EventListener<QuerySn
     private Query query;
     private ListenerRegistration registration;
 
-    public ConversationDataListenerRepository(Context context) {
+    public ConversationDataListenerRepository(Context context, Query query) {
         this.conversationDataUpdatesDAO = DBConnect.getInstance(context).conversationDataUpdatesDAO();
-        this.query = ConversationDAL.getAllConversation();
+        this.query = query;
         startQuery();
     }
 
@@ -72,8 +74,13 @@ public class ConversationDataListenerRepository implements EventListener<QuerySn
 
     public static class InsertAsyncTask extends AsyncTask<Conversation, Void, Void>{
         private ConversationDataUpdatesDAO conversationDataUpdatesDAO;
+        private Context context;
 
         public InsertAsyncTask(ConversationDataUpdatesDAO conversationDataUpdatesDAO) {
+            this.conversationDataUpdatesDAO = conversationDataUpdatesDAO;
+        }
+        public InsertAsyncTask(Context context, ConversationDataUpdatesDAO conversationDataUpdatesDAO) {
+            this.context = context;
             this.conversationDataUpdatesDAO = conversationDataUpdatesDAO;
         }
 

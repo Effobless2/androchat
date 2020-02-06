@@ -4,9 +4,11 @@ import android.content.Context;
 
 import androidx.annotation.NonNull;
 
+import com.example.firelib.DAL.MessageDAL;
 import com.example.firelib.managers.ConversationManagement;
 import com.example.localDB.DAO.DBConnect;
 import com.example.localDB.repositories.conversationRepositories.ConversationDataListenerRepository;
+import com.example.localDB.repositories.messageRepositories.MessageDataListenerRepository;
 import com.example.model.Conversation;
 import com.example.model.RelUserConv;
 import com.google.android.gms.tasks.Continuation;
@@ -52,8 +54,9 @@ public class RelUsersConversationsRepository implements EventListener<QuerySnaps
                     switch (documentChange.getType()){
                         case ADDED:
                             new ConversationDataListenerRepository
-                                    .InsertAsyncTask(DBConnect.getInstance(context).conversationDataUpdatesDAO())
+                                    .InsertAsyncTask(context, DBConnect.getInstance(context).conversationDataUpdatesDAO())
                                     .execute(conversation);
+                            new MessageDataListenerRepository(context, MessageDAL.getMessagesByIdConv(conversation.getId()));
                             break;
                         case REMOVED:
                             new ConversationDataListenerRepository
