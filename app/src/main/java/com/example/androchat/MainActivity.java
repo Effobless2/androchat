@@ -16,6 +16,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.androchat.authentication.SignInActivity;
+import com.example.androchat.conversations.ConversationsList;
 import com.example.androchat.friendRequest.SearchUserFragment;
 import com.example.androchat.friendRequest.addFriendFragment;
 import com.example.baseWatcherService.BaseListenerService;
@@ -28,7 +29,8 @@ import com.google.firebase.auth.FirebaseUser;
 public class MainActivity extends AppCompatActivity implements
         addFriendFragment.OnFragmentInteractionListener,
         MainFragment.OnFragmentInteractionListener,
-        SearchUserFragment.OnFragmentInteractionListener {
+        SearchUserFragment.OnFragmentInteractionListener,
+        ConversationsList.OnFragmentInteractionListener{
 
     private boolean isBound = false;
     private BaseListenerService.ServiceBinder binder;
@@ -117,7 +119,14 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     public void conversationOnClic(View view) {
+        TextView title = (TextView) findViewById(R.id.title);
+        title.setText("Conversations");
+
         Log.v("CLIC : ","button conversation");
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        ft.replace(R.id.fragmentMain, new ConversationsList());
+        ft.commit();
     }
 
     public void searchFirendOnClic(View view) {
