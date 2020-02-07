@@ -103,7 +103,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:onClick="searchFirendOnClic"
+            android:onClick="searchFriendOnClic"
             android:text="demande d'ami"
             android:textColor="#E91E63"
             android:textSize="10sp" />

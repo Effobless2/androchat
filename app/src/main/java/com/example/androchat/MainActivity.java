@@ -18,7 +18,6 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.androchat.authentication.SignInActivity;
 import com.example.androchat.conversations.ConversationsList;
 import com.example.androchat.friendRequest.SearchUserFragment;
-import com.example.androchat.friendRequest.addFriendFragment;
 import com.example.baseWatcherService.BaseListenerService;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -27,7 +26,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity implements
-        addFriendFragment.OnFragmentInteractionListener,
         MainFragment.OnFragmentInteractionListener,
         SearchUserFragment.OnFragmentInteractionListener,
         ConversationsList.OnFragmentInteractionListener{
@@ -129,14 +127,13 @@ public class MainActivity extends AppCompatActivity implements
         ft.commit();
     }
 
-    public void searchFirendOnClic(View view) {
+    public void searchFriendOnClic(View view) {
         TextView title = (TextView) findViewById(R.id.title);
         title.setText("Recherche d'amis");
 
         Log.v("CLIC : ","button recherche ami");
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
-        //ft.replace(R.id.fragmentMain, new addFriendFragment());
         ft.replace(R.id.fragmentMain, new SearchUserFragment());
         ft.commit();
     }
