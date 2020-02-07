@@ -72,4 +72,20 @@ public class UserManagement {
                 });
     }
 
+    public static Task<List<User>> getUserByEmail(String email){
+        return UserDAL.getUserEmail(email).get()
+                .continueWith(new Continuation<QuerySnapshot, List<User>>() {
+                    @Override
+                    public List<User> then(@NonNull Task<QuerySnapshot> task) throws Exception {
+                        List<User> result = new ArrayList<>();
+                        QuerySnapshot snapshot = task.getResult();
+                        List<DocumentSnapshot> documentSnapshots = snapshot.getDocuments();
+                        for (DocumentSnapshot documentSnapshot : documentSnapshots) {
+                            result.add(documentSnapshot.toObject(User.class));
+                        }
+                        return result;
+                    }
+                });
+    }
+
 }
