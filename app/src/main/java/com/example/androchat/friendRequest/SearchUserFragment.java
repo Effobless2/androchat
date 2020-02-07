@@ -14,6 +14,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.androchat.R;
+import com.example.androchat.adapters.UserAdapter;
 import com.example.firelib.managers.UserManagement;
 import com.example.model.User;
 import com.google.android.gms.tasks.Continuation;
@@ -99,9 +100,8 @@ public class SearchUserFragment extends Fragment {
                                     List<User> result = task.getResult();
                                     if(result.size() > 0) {
                                         ListView listView = (ListView) getView().findViewById(R.id.list_user);
-                                        ArrayAdapter<User> listViewAdapter = new ArrayAdapter<User>(
+                                        UserAdapter listViewAdapter = new UserAdapter(
                                                 getActivity(),
-                                                android.R.layout.simple_list_item_1,
                                                 result
                                         );
                                         listView.setAdapter(listViewAdapter);
@@ -168,9 +168,8 @@ public class SearchUserFragment extends Fragment {
                     public List<User> then(@NonNull Task<List<User>> task) throws Exception{
                         List<User> result = task.getResult();
                         ListView listView = (ListView) getView().findViewById(R.id.list_user);
-                        ArrayAdapter<User> listViewAdapter =  new ArrayAdapter<User>(
+                        UserAdapter listViewAdapter = new UserAdapter(
                                 getActivity(),
-                                android.R.layout.simple_list_item_1,
                                 result
                         );
                         listView.setAdapter(listViewAdapter);
