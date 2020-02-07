@@ -36,4 +36,10 @@ public class UserDAL {
                 .collection(User.COLLECTION_DATABASE_NAME)
                 .whereEqualTo(User.GOOGLE_ID_FIREBASE_FIELD, googleId);
     }
+
+    public static Query getUserEmail(String email) {
+        return DbConnect.getDatabase()
+                .collection(User.COLLECTION_DATABASE_NAME)
+                .whereEqualTo(User.USER_EMAIL_FIREBASE_FIELD, email);
+    }
 }

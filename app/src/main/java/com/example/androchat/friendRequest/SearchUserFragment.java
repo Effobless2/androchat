@@ -92,7 +92,7 @@ public class SearchUserFragment extends Fragment {
                 if(null == googleId || googleId.length() == 0)
                     getAllUser();
                 else
-                    UserManagement.getUserByGoogleId(googleId)
+                    UserManagement.getUserByEmail(googleId)
                             .continueWith(new Continuation<List<User>, List<User>>() {
                                 @Override
                                 public List<User> then(@NonNull Task<List<User>> task) throws Exception{

@@ -64,6 +64,8 @@ public class SignInActivity extends AppCompatActivity {
                 //Toast.makeText(this, user.getUid(), Toast.LENGTH_LONG).show();
                 User u = new User();
                 u.setGoogleId(user.getUid());
+                u.setAvatar(user.getPhotoUrl().toString());
+                u.setEmail(user.getEmail());
                 UserManagement.getDocumentRefenceByGoogleId(u)
                         .continueWith(new Continuation<String, String>() {
                             @Override
