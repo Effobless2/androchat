@@ -6,6 +6,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
@@ -17,6 +18,8 @@ import com.example.localDB.repositories.messageRepositories.MessageDataAccessRep
 import com.example.model.Conversation;
 import com.example.model.Message;
 import com.example.notifications.NotificationsService;
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
@@ -59,24 +62,30 @@ public class MessagesActivity extends AppCompatActivity {
     }
 
     private void sendMessage() {
-        String messageTxt = ((EditText)findViewById(R.id.messageText)).getText().toString();
-        Message message = new Message();
+        final String messageTxt = ((EditText)findViewById(R.id.messageText)).getText().toString();
+        final Message message = new Message();
         message.setContent(messageTxt);
         message.setDate(new Date());
         message.setId_user(FirebaseAuth.getInstance().getCurrentUser().getUid());
         message.setId_conv(conversation.getId());
-        MessageManagement.create(message);
-        NotificationsService.sendMessage(conversation.getName(), messageTxt, conversation.getId(), new AsyncHttpResponseHandler() {
+        MessageManagement.create(message).continueWith(new Continuation<String, Object>() {
             @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+            public Object then(@NonNull Task<String> task) throws Exception {
+                NotificationsService.sendMessage(conversation.getId(), conversation.getId(), task.getResult(), new AsyncHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
 
-            }
+                    }
 
-            @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
 
+                    }
+                });
+                return null;
             }
         });
+
     }
 
 
