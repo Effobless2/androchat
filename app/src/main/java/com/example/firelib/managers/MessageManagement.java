@@ -86,7 +86,7 @@ public class MessageManagement {
                     @Override
                     public String then(@NonNull Task<DocumentReference> task) throws Exception {
                         DocumentReference documentReference = task.getResult();
-                        return documentReference.getId().toString();
+                        return documentReference.getId();
                     }
                 });
     }
