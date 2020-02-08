@@ -3,7 +3,9 @@ package com.example.firelib.managers;
 import androidx.annotation.NonNull;
 
 import com.example.firelib.DAL.ConversationDAL;
+import com.example.firelib.DAL.RelUserConvDAL;
 import com.example.model.Conversation;
+import com.example.model.RelUserConv;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
@@ -74,6 +76,13 @@ public class ConversationManagement {
                         return documentReference.getId().toString();
                     }
                 });
+    }
+
+    public static Task addUserInConv(String convId, String googleId){
+        RelUserConv relUserConv = new RelUserConv();
+        relUserConv.setId_conv(convId);
+        relUserConv.setId_users(googleId);
+        return RelUserConvDAL.addUserInConv(relUserConv);
     }
 
 }
