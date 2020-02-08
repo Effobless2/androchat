@@ -22,4 +22,8 @@ public class UserDataAccessRepository {
     public LiveData<List<User>> getAll(){
         return dao.getAll();
     }
+
+    public LiveData<List<User>> getUserByGoogleId(String id_user) {
+        return dao.getByGoogleId(id_user);
+    }
 }

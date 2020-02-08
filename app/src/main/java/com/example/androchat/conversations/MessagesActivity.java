@@ -7,9 +7,11 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 
 import com.example.androchat.R;
+import com.example.androchat.adapters.MessageAdapter;
 import com.example.firelib.managers.MessageManagement;
 import com.example.localDB.repositories.messageRepositories.MessageDataAccessRepository;
 import com.example.model.Conversation;
@@ -25,6 +27,7 @@ import cz.msebera.android.httpclient.Header;
 
 public class MessagesActivity extends AppCompatActivity {
     Conversation conversation;
+    public static LifecycleOwner lifecycle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,13 +35,14 @@ public class MessagesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_messages);
         conversation = (Conversation) getIntent().getSerializableExtra(Conversation.SERIAL_KEY);
         setTitle(conversation.getName());
+        lifecycle = this;
 
         new MessageDataAccessRepository(this).getMessagesByConversation(conversation.getId()).observe(this, new Observer<List<Message>>() {
             @Override
             public void onChanged(List<Message> messages) {
-                ArrayAdapter<Message> adapter = new ArrayAdapter<>(
+                MessageAdapter adapter = new MessageAdapter(
+                        lifecycle,
                         getApplicationContext(),
-                        android.R.layout.simple_list_item_1,
                         messages
 
                 );
