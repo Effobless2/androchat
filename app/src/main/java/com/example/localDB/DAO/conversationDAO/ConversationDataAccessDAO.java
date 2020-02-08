@@ -14,6 +14,6 @@ public interface ConversationDataAccessDAO {
     @Query("SELECT * FROM conversations WHERE id = :id")
     LiveData<List<Conversation>> getConversationById(String id);
 
-    @Query("SELECT * FROM conversations")
+    @Query("SELECT * FROM conversations ORDER BY last_message_date DESC")
     LiveData<List<Conversation>> getAll();
 }
