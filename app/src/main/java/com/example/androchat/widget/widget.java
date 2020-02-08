@@ -9,43 +9,55 @@ import android.widget.RemoteViews;
 
 import com.example.androchat.MainActivity;
 import com.example.androchat.R;
+import com.example.androchat.conversations.MessagesActivity;
+import com.example.model.Conversation;
+import com.example.model.Message;
 
 /**
  * Implementation of App Widget functionality.
  */
 public class widget extends AppWidgetProvider {
+    private static final String YOUR_AWESOME_ACTION = "GO_TO_CONV";
+    public static int appwidgetid = AppWidgetManager.INVALID_APPWIDGET_ID;
 
-    static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
-                                int appWidgetId) {
+    public static Conversation conversation;
 
-        CharSequence widgetText = context.getString(R.string.appwidget_text);
-        // Construct the RemoteViews object
-        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget);
-        views.setTextViewText(R.id.appwidget_text, widgetText);
+    public static Message message;
 
-        // Instruct the widget manager to update the widget
-        appWidgetManager.updateAppWidget(appWidgetId, views);
-    }
-
-    public static void updateWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId, String message){
+    public static void updateWidget(
+            Context context,
+            AppWidgetManager appWidgetManager,
+            int appWidgetId,
+            Conversation curConversation,
+            Message curMessage
+    ){
         RemoteViews rv = new RemoteViews(context.getPackageName(), R.layout.widget);
-        rv.setTextViewText(R.id.appwidget_text, message);
+        conversation = curConversation;
+        message = curMessage;
+        rv.setTextViewText(R.id.widgetMessageText, message.getContent());
+        rv.setTextViewText(R.id.widgetConvNameText, conversation.getName());
+        Intent intent = new Intent(context, MessagesActivity.class);
+        intent.putExtra(Conversation.SERIAL_KEY, conversation);
+        intent.setAction(YOUR_AWESOME_ACTION);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0,intent,0);
+        rv.setOnClickPendingIntent(R.id.btn_widget, pendingIntent);
         appWidgetManager.updateAppWidget(appWidgetId, rv);
     }
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-        // There may be multiple widgets active, so update all of them
-        for(int appWidgetId : appWidgetIds){
-            Intent intent = new Intent(context, MainActivity.class);
-            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0,intent,0);
-            updateWidget(context, appWidgetManager, appWidgetId, "Un message sauvage apparaît !");
 
-            RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget);
-            views.setOnClickPendingIntent(R.id.btn_widget, pendingIntent);
-
-            appWidgetManager.updateAppWidget(appWidgetId, views);
+        super.onUpdate(context, appWidgetManager, appWidgetIds);
+        for (int appWidgetId :
+                appWidgetIds) {
+            updateWidget(context, appWidgetManager, appWidgetId, conversation, message);
         }
+    }
+
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        super.onReceive(context, intent);
+
     }
 
     @Override
