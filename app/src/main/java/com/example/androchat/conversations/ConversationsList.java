@@ -15,6 +15,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 
 import com.example.androchat.R;
+import com.example.androchat.adapters.ConversationsAdapter;
 import com.example.localDB.repositories.conversationRepositories.ConversationDataAccessRepository;
 import com.example.model.Conversation;
 
@@ -61,11 +62,7 @@ public class ConversationsList extends Fragment {
         list.observe(this, new Observer<List<Conversation>>() {
             @Override
             public void onChanged(List<Conversation> conversations) {
-                ArrayAdapter listViewAdapter = new ArrayAdapter<>(
-                    getContext(),
-                    android.R.layout.simple_list_item_1,
-                    conversations
-                );
+                ArrayAdapter listViewAdapter = new ConversationsAdapter(getContext(), conversations);
                 ListView listView = view.findViewById(R.id.conversation_list);
                 listView.setAdapter(listViewAdapter);
             }
