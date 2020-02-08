@@ -3,6 +3,8 @@
     <string name="notification_title"></string>
     <string name="default_notification_channel_id">Androchat</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
 </resources>
 
 
