@@ -6,10 +6,9 @@
     tools:context=".conversations.ConversationsList"
     android:background="@color/colorPrimary">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ListView
+        android:id="@+id/conversation_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Conversation List Fragment" />
+        android:layout_height="match_parent" />
 
 </FrameLayout>
