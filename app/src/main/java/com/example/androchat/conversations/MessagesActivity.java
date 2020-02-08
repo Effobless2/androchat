@@ -71,7 +71,7 @@ public class MessagesActivity extends AppCompatActivity {
         MessageManagement.create(message).continueWith(new Continuation<String, Object>() {
             @Override
             public Object then(@NonNull Task<String> task) throws Exception {
-                NotificationsService.sendMessage(conversation.getId(), conversation.getId(), task.getResult(), new AsyncHttpResponseHandler() {
+                NotificationsService.sendMessage(conversation.getId(), task.getResult(), new AsyncHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
 

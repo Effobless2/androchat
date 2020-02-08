@@ -73,17 +73,7 @@ public class NewConversationActivity extends AppCompatActivity {
                     if (checked) {
                         String googleId =  mAdapter.getUsers().get(i).getGoogleId();
                         ConversationManagement.addUserInConv(convId,googleId);
-                        NotificationsService.sendMessage(convId, convId, googleId, new AsyncHttpResponseHandler() {
-                            @Override
-                            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-
-                            }
-
-                            @Override
-                            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-
-                            }
-                        });
+                        NotificationsService.sendNewConversation(conversation, googleId);
                     }
                 }
                 Intent intent = new Intent(getApplicationContext(), MessagesActivity.class);

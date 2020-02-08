@@ -34,6 +34,8 @@ import org.json.JSONObject;
 
 import java.util.Random;
 
+import cz.msebera.android.httpclient.Header;
+
 public class NotificationsService extends FirebaseMessagingService {
 
     public static final String FRIEND_REQUEST = "FRIEND_REQUEST";
@@ -57,7 +59,7 @@ public class NotificationsService extends FirebaseMessagingService {
     *  topic = ConversationId
     *  handler = action after sending
     */
-    public static void sendMessage(String topic, String convId, String messageId, AsyncHttpResponseHandler handler){
+    public static void sendMessage(String topic, String messageId, AsyncHttpResponseHandler handler){
         try {   //Enter your notification message
             AsyncHttpClient client = new AsyncHttpClient();
             client.addHeader("Authorization", serverKey);
@@ -75,6 +77,34 @@ public class NotificationsService extends FirebaseMessagingService {
         }
     }
 
+    public static void sendNewConversation(Conversation conversation, String googleId){
+        try {   //Enter your notification message
+            AsyncHttpClient client = new AsyncHttpClient();
+            client.addHeader("Authorization", serverKey);
+            client.addHeader("Content-Type", contentType);
+            JSONObject notifcationBody = new JSONObject();
+            notifcationBody.put("body", conversation.getId());
+            notifcationBody.put("title", CONVERSATION);
+            RequestParams params = new RequestParams();
+            params.setUseJsonStreamer(true);
+            params.put("data", notifcationBody);
+            params.put("to", "/topics/" + googleId);
+            client.post(FCM_API, params, new AsyncHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+                }
+            });
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     //Message Reception
     @Override
@@ -87,7 +117,8 @@ public class NotificationsService extends FirebaseMessagingService {
                     newFriendRequest();
                     break;
                 case CONVERSATION:
-                    newConversation();
+                    String conversationId = remoteMessage.getData().get("body");
+                    newConversation(conversationId);
                     break;
                 default:
                     String messageId = remoteMessage.getData().get("body");
@@ -97,8 +128,14 @@ public class NotificationsService extends FirebaseMessagingService {
         }
     }
 
-    private void newConversation() {
-
+    private void newConversation(String conversationId) {
+        ConversationManagement.getConversationById(conversationId).continueWith(new Continuation<Conversation, Object>() {
+            @Override
+            public Object then(@NonNull Task<Conversation> task) throws Exception {
+                createNewConversationNotification(task.getResult());
+                return null;
+            }
+        });
     }
 
     private void newFriendRequest() {
@@ -160,8 +197,45 @@ public class NotificationsService extends FirebaseMessagingService {
 
         // 7 - Show notification
         notificationManager.notify(new Random().nextInt(9999 - 1000) + 1000 + "", NOTIFICATION_ID, notificationBuilder.build());
+    }
 
+    private void createNewConversationNotification(Conversation conversation){
+        Intent intent = new Intent(this, MessagesActivity.class);
+        intent.putExtra(Conversation.SERIAL_KEY, conversation);
 
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        // 2 - Create a Style for the Notification
+        NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
+        inboxStyle.setBigContentTitle(conversation.getName());
+
+        // 3 - Create a Channel (Android 8)
+        String channelId = getString(R.string.default_notification_channel_id);
+
+        // 5 - Add the Notification to the Notification Manager and show it.
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        // 6 - Support Version >= Android 8
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence channelName = "Message provenant de Firebase";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel mChannel = new NotificationChannel(channelId, channelName, importance);
+            notificationManager.createNotificationChannel(mChannel);
+        }
+
+        // 4 - Build a Notification object
+        NotificationCompat.Builder notificationBuilder =
+                new NotificationCompat.Builder(this, channelId)
+                        .setSmallIcon(R.drawable.common_google_signin_btn_icon_dark)
+                        .setContentTitle(conversation.getName())
+                        .setContentText("Vous avez été invité dans la conversation !")
+                        .setAutoCancel(true)
+                        .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+                        .setContentIntent(pendingIntent)
+                        .setStyle(inboxStyle);
+
+        // 7 - Show notification
+        notificationManager.notify(new Random().nextInt(9999 - 1000) + 1000 + "", NOTIFICATION_ID, notificationBuilder.build());
 
     }
 
