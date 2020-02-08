@@ -11,6 +11,7 @@ import com.example.androchat.MainActivity;
 import com.example.androchat.R;
 import com.example.firelib.managers.UserManagement;
 import com.example.model.User;
+import com.example.notifications.NotificationsService;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.android.gms.tasks.Continuation;
@@ -77,6 +78,7 @@ public class SignInActivity extends AppCompatActivity {
                                 return null;
                             }
                         });
+                NotificationsService.subscribe(user.getUid());
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
                 // ...

@@ -16,4 +16,7 @@ public interface UserDataAccessDAO {
 
     @Query("SELECT * FROM contacts")
     LiveData<List<User>> getAll();
+
+    @Query("SELECT * FROM contacts WHERE googleId = :id_user")
+    LiveData<List<User>> getByGoogleId(String id_user);
 }
