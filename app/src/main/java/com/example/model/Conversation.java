@@ -8,15 +8,18 @@ import androidx.room.TypeConverters;
 
 import com.example.model.converters.DateToLongConverter;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity(tableName = "conversations")
 @TypeConverters(DateToLongConverter.class)
-public class Conversation {
+public class Conversation implements Serializable {
     public static String COLLECTION_DATABASE_NAME = "conversations";
     public static String NAME_DATABASE_FIELD = "name";
     public static String LAST_MESSAGE_DATE_DATABASE_FIELD = "last_message_date";
     public static String ID_DATABASE_FIELD = "id";
+
+    public static final String SERIAL_KEY = "CONVERSATION";
 
     @PrimaryKey(autoGenerate = false)
     @NonNull

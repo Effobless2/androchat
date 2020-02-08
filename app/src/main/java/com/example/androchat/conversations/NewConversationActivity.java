@@ -1,5 +1,6 @@
 package com.example.androchat.conversations;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -56,13 +57,14 @@ public class NewConversationActivity extends AppCompatActivity {
     }
 
     private void createConv() {
-        Conversation conversation = new Conversation();
+        final Conversation conversation = new Conversation();
         conversation.setName(((EditText)findViewById(R.id.convName)).getText().toString());
         conversation.setLast_message_date(new Date());
         ConversationManagement.create(conversation).continueWith(new Continuation<String, Object>() {
             @Override
             public Object then(@NonNull Task<String> task) throws Exception {
                 String convId = task.getResult();
+                conversation.setId(convId);
                 String current = FirebaseAuth.getInstance().getCurrentUser().getUid();
                 ConversationManagement.addUserInConv(convId, current);
                 NotificationsService.subscribe(convId);
@@ -84,6 +86,9 @@ public class NewConversationActivity extends AppCompatActivity {
                         });
                     }
                 }
+                Intent intent = new Intent(getApplicationContext(), MessagesActivity.class);
+                intent.putExtra(Conversation.SERIAL_KEY, conversation);
+                startActivity(intent);
                 return null;
             }
         });

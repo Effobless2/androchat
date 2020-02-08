@@ -11,7 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".conversations.NewConversationActivity"></activity>
+        <activity android:name=".conversations.MessagesActivity"></activity>
+        <activity android:name=".conversations.NewConversationActivity" />
 
         <receiver android:name=".widget.widget">
             <intent-filter>
@@ -32,7 +33,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity"></activity> <!-- NOTIFICATION SERVICE -->
+        <activity android:name=".MainActivity" /> <!-- NOTIFICATION SERVICE -->
         <service
             android:name="com.example.notifications.NotificationsService"
             android:permission="com.google.android.c2dm.permission.SEND">

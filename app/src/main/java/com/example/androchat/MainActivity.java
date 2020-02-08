@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        this.setTitle("Hello " + FirebaseAuth.getInstance().getCurrentUser().getEmail());
     }
 
     @Override
