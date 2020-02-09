@@ -61,8 +61,8 @@ public class FriendShipManagement {
         relContacts1.setTo(friendRequest.getTo());
 
         RelContacts relContacts2 = new RelContacts();
-        relContacts1.setFrom(friendRequest.getTo());
-        relContacts1.setTo(friendRequest.getFrom());
+        relContacts2.setFrom(relContacts1.getTo());
+        relContacts2.setTo(relContacts1.getFrom());
 
         RelContactsDAL.createRelation(relContacts1);
         RelContactsDAL.createRelation(relContacts2);
