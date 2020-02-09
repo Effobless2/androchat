@@ -111,6 +111,34 @@ public class NotificationsService extends FirebaseMessagingService {
         }
     }
 
+    public static void sendRequest(String to, String from) {
+        try {   //Enter your notification message
+            AsyncHttpClient client = new AsyncHttpClient();
+            client.addHeader("Authorization", serverKey);
+            client.addHeader("Content-Type", contentType);
+            JSONObject notifcationBody = new JSONObject();
+            notifcationBody.put("body", from);
+            notifcationBody.put("title", CONVERSATION);
+            RequestParams params = new RequestParams();
+            params.setUseJsonStreamer(true);
+            params.put("data", notifcationBody);
+            params.put("to", "/topics/" + to);
+            client.post(FCM_API, params, new AsyncHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+                }
+            });
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     //Message Reception
     @Override
