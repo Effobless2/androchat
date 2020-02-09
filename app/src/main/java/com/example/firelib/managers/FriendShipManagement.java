@@ -78,4 +78,21 @@ public class FriendShipManagement {
                     }
                 });
     }
+
+    public static Task<List<String>> getAllContactOfUser(String googleId){
+        return RelContactsDAL.getAllContactsOfCurrentGoogleUser(googleId).get()
+                .continueWith(new Continuation<QuerySnapshot, List<String>>() {
+                    @Override
+                    public List<String> then(@NonNull Task<QuerySnapshot> task) throws Exception {
+                        List<String> result = new ArrayList<>();
+
+                        QuerySnapshot querySnapshot = task.getResult();
+
+                        for (DocumentSnapshot document : querySnapshot.getDocuments()) {
+                            result.add(document.toObject(RelContacts.class).getTo());
+                        }
+                        return result;
+                    }
+                });
+    }
 }

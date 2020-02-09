@@ -21,21 +21,43 @@
         android:minHeight="70dp"
         tools:srcCompat="@tools:sample/avatars" />
 
-    <TextView
-        android:id="@+id/email"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="TextView"
-        android:textSize="16sp"
-        android:maxWidth="@dimen/fui_auth_method_button_width"
-        android:layout_margin="@dimen/fui_auth_method_button_margin"
-        />
-
-    <Button
-        android:id="@+id/sendRequestBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:layout_marginEnd="@dimen/fui_auth_method_button_margin"
-        android:text="Add" />
+        android:layout_marginStart="@dimen/fui_auth_method_button_margin">
+
+        <TextView
+            android:id="@+id/email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/fui_auth_method_button_margin"
+            android:layout_weight="1"
+            android:maxWidth="@dimen/fui_auth_method_button_width"
+            android:text="TextView"
+            android:textSize="16sp" />
+
+        <LinearLayout
+            android:id="@+id/userRowBtnLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/sendRequestBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="✓" />
+
+            <Button
+                android:id="@+id/annulationRequest"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@android:color/holo_red_dark"
+                android:text="X"
+                android:textColor="@android:color/white" />
+        </LinearLayout>
+    </LinearLayout>
+
 </LinearLayout>
