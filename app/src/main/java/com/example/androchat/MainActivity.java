@@ -20,6 +20,7 @@ import com.example.androchat.conversations.ConversationsList;
 import com.example.androchat.friendRequest.SearchUserFragment;
 import com.example.androchat.localFriends.ContactsFragment;
 import com.example.baseWatcherService.BaseListenerService;
+import com.example.notifications.NotificationsService;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
