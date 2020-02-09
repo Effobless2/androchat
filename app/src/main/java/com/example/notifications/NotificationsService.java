@@ -21,8 +21,10 @@ import com.example.androchat.conversations.MessagesActivity;
 import com.example.androchat.widget.widget;
 import com.example.firelib.managers.ConversationManagement;
 import com.example.firelib.managers.MessageManagement;
+import com.example.firelib.managers.UserManagement;
 import com.example.model.Conversation;
 import com.example.model.Message;
+import com.example.model.User;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -36,6 +38,7 @@ import com.loopj.android.http.RequestParams;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.List;
 import java.util.Random;
 
 import cz.msebera.android.httpclient.Header;
@@ -111,6 +114,34 @@ public class NotificationsService extends FirebaseMessagingService {
         }
     }
 
+    public static void sendRequest(String to, String from) {
+        try {   //Enter your notification message
+            AsyncHttpClient client = new AsyncHttpClient();
+            client.addHeader("Authorization", serverKey);
+            client.addHeader("Content-Type", contentType);
+            JSONObject notifcationBody = new JSONObject();
+            notifcationBody.put("body", from);
+            notifcationBody.put("title", FRIEND_REQUEST);
+            RequestParams params = new RequestParams();
+            params.setUseJsonStreamer(true);
+            params.put("data", notifcationBody);
+            params.put("to", "/topics/" + to);
+            client.post(FCM_API, params, new AsyncHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+
+                }
+
+                @Override
+                public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+
+                }
+            });
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     //Message Reception
     @Override
@@ -120,7 +151,8 @@ public class NotificationsService extends FirebaseMessagingService {
             String title = remoteMessage.getData().get("title");
             switch (title){
                 case FRIEND_REQUEST:
-                    newFriendRequest();
+                    String from = remoteMessage.getData().get("body");
+                    newFriendRequest(from);
                     break;
                 case CONVERSATION:
                     String conversationId = remoteMessage.getData().get("body");
@@ -144,8 +176,18 @@ public class NotificationsService extends FirebaseMessagingService {
         });
     }
 
-    private void newFriendRequest() {
-
+    private void newFriendRequest(String from) {
+        UserManagement.getUserByGoogleId(from)
+                .continueWith(new Continuation<List<User>, Object>() {
+                    @Override
+                    public Object then(@NonNull Task<List<User>> task) throws Exception {
+                        List<User> users = task.getResult();
+                        if(users.size() > 0){
+                            createNewFriendRequestNotification(users.get(0));
+                        }
+                        return null;
+                    }
+                });
     }
 
     private void newMessageReceived(String conversationId, final String messageId) {
@@ -257,37 +299,12 @@ public class NotificationsService extends FirebaseMessagingService {
 
     }
 
-    /*
-    * Subscribing to a Conversation
-    * @Params :
-    *   topic = ConversationId
-    */
-    public static void subscribe(String topic){
-        FirebaseMessaging.getInstance().subscribeToTopic(topic)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        String msg = "Success";
-                        if (!task.isSuccessful()) {
-                            msg = "Error";
-                        }
-                        Log.d("SUBSCRIPTION", msg);
-                    }
-                });
-    }
+    private void createNewFriendRequestNotification(User user){Intent intent = new Intent(this, MainActivity.class);
 
-
-    //Notification Visual
-    private void sendVisualNotification(String title, String messageBody) {
-
-        // 1 - Create an Intent that will be shown when user will click on the Notification
-        Intent intent = new Intent(this, MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
-
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         // 2 - Create a Style for the Notification
         NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
-        inboxStyle.setBigContentTitle(getString(R.string.notification_title));
-        inboxStyle.addLine(messageBody);
+        inboxStyle.setBigContentTitle(user.getEmail());
 
         // 3 - Create a Channel (Android 8)
         String channelId = getString(R.string.default_notification_channel_id);
@@ -306,9 +323,9 @@ public class NotificationsService extends FirebaseMessagingService {
         // 4 - Build a Notification object
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(this, channelId)
-                        .setSmallIcon(R.drawable.ic_launcher_background)
-                        .setContentTitle(getString(R.string.app_name))
-                        .setContentText(title + " : " + messageBody)
+                        .setSmallIcon(R.drawable.common_google_signin_btn_icon_dark)
+                        .setContentTitle(user.getEmail())
+                        .setContentText("Vous a envoyé une demande d'amis !")
                         .setAutoCancel(true)
                         .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
                         .setContentIntent(pendingIntent)
@@ -316,5 +333,24 @@ public class NotificationsService extends FirebaseMessagingService {
 
         // 7 - Show notification
         notificationManager.notify(new Random().nextInt(9999 - 1000) + 1000 + "", NOTIFICATION_ID, notificationBuilder.build());
+    }
+
+    /*
+    * Subscribing to a Conversation
+    * @Params :
+    *   topic = ConversationId
+    */
+    public static void subscribe(String topic){
+        FirebaseMessaging.getInstance().subscribeToTopic(topic)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        String msg = "Success";
+                        if (!task.isSuccessful()) {
+                            msg = "Error";
+                        }
+                        Log.d("SUBSCRIPTION", msg);
+                    }
+                });
     }
 }

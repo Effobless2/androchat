@@ -9,6 +9,8 @@ import androidx.room.PrimaryKey;
 @Entity(tableName = "rel_contacts")
 public class RelContacts {
     public static final String COLLECTION_DATABASE_NAME = "rel_users";
+    public static final String FROM_DATABASE_NAME = "from";
+    public static final String TO_DATABASE_NAME = "to";
 
     @PrimaryKey(autoGenerate = false)
     @NonNull

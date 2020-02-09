@@ -20,6 +20,7 @@ import com.example.androchat.conversations.ConversationsList;
 import com.example.androchat.friendRequest.SearchUserFragment;
 import com.example.androchat.localFriends.ContactsFragment;
 import com.example.baseWatcherService.BaseListenerService;
+import com.example.notifications.NotificationsService;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -27,11 +28,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity implements
-        MainFragment.OnFragmentInteractionListener,
         SearchUserFragment.OnFragmentInteractionListener,
         ConversationsList.OnFragmentInteractionListener,
         ContactsFragment.OnFragmentInteractionListener {
 
+    FragmentManager fm;
     private boolean isBound = false;
     private BaseListenerService.ServiceBinder binder;
     private ServiceConnection serviceConnection = new ServiceConnection() {
@@ -57,6 +58,8 @@ public class MainActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         this.setTitle("Hello " + FirebaseAuth.getInstance().getCurrentUser().getEmail());
+        fm = getSupportFragmentManager();
+        conversationOnClic(null);
     }
 
     @Override
@@ -118,7 +121,6 @@ public class MainActivity extends AppCompatActivity implements
     public void contactOnClic(View view) {
         TextView title = (TextView) findViewById(R.id.title);
         title.setText("Contacts");
-        FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         ft.replace(R.id.fragmentMain, new ContactsFragment());
         ft.commit();
@@ -129,7 +131,6 @@ public class MainActivity extends AppCompatActivity implements
         title.setText("Conversations");
 
         Log.v("CLIC : ","button conversation");
-        FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         ft.replace(R.id.fragmentMain, new ConversationsList());
         ft.commit();
@@ -140,7 +141,6 @@ public class MainActivity extends AppCompatActivity implements
         title.setText("Recherche d'amis");
 
         Log.v("CLIC : ","button recherche ami");
-        FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         ft.replace(R.id.fragmentMain, new SearchUserFragment());
         ft.commit();

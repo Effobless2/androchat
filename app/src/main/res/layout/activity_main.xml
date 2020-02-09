@@ -52,9 +52,8 @@
         </LinearLayout>
     </LinearLayout>
 
-    <fragment
+    <FrameLayout
         android:id="@+id/fragmentMain"
-        android:name="com.example.androchat.MainFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="10dp"
