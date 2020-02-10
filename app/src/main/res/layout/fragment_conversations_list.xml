@@ -13,7 +13,7 @@
         android:layout_height="match_parent"
         android:layout_weight="10"
         android:layout_gravity="right"
-        android:text="+" />
+        android:text="@string/add_conversation_btn" />
 
     <ListView
         android:id="@+id/conversation_list"

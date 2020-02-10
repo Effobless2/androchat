@@ -22,14 +22,14 @@
             android:layout_weight="10"
             android:layout_marginEnd="10dp"
             android:inputType="textPersonName"
-            android:hint="Name" />
+            android:hint="@string/conversation_name_hint" />
 
         <Button
             android:id="@+id/createConvBtn"
             android:layout_weight="10"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Créer" />
+            android:text="@string/create_conversation_btn" />
     </LinearLayout>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/contacts"

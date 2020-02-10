@@ -37,7 +37,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:onClick="logoutOnClic"
-                android:text="Deconnexion"
+                android:text="@string/deconnection_btn"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -80,7 +80,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:onClick="contactOnClic"
-            android:text="contact" />
+            android:text="@string/contacts_btn" />
 
         <Button
             android:id="@+id/btn_conversation"
@@ -93,7 +93,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:onClick="conversationOnClic"
-            android:text="conversation"/>
+            android:text="@string/conversations_btn"/>
 
         <Button
             android:id="@+id/btn-request_user"
@@ -106,7 +106,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:onClick="searchFriendOnClic"
-            android:text="demande d'ami" />
+            android:text="@string/users_btn" />
 
     </LinearLayout>
 

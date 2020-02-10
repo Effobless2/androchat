@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="deconnection_btn">Déconnexion</string>
+    <string name="contacts_btn">Contacts</string>
+    <string name="conversations_btn">Conversations</string>
+    <string name="users_btn">Utilisateurs</string>
+    <string name="message_hint">Ecrire un message</string>
+    <string name="send_btn">Envoyer</string>
+    <string name="conversation_name_hint">Entrer un nom de conversation</string>
+    <string name="create_conversation_btn">Créer</string>
+    <string name="search">Rechercher</string>
+    <string name="no_conversation">Pas de message</string>
+    <string name="ok">OK</string>
+</resources>

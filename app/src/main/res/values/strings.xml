@@ -1,10 +1,20 @@
 <resources>
-    <string name="app_name">Androchat</string>
-    <string name="notification_title"></string>
-    <string name="default_notification_channel_id">Androchat</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="appwidget_text">EXAMPLE</string>
-    <string name="add_widget">Add widget</string>
+    <string name="app_name" translatable="false">Androchat</string>
+    <string name="default_notification_channel_id" translatable="false">Androchat</string>
+    <string name="appwidget_text" translatable="false">Androchat</string>
+    <string name="add_widget" translatable="false">Add widget</string>
+    <string name="deconnection_btn">Deconnection</string>
+    <string name="contacts_btn">Contacts</string>
+    <string name="conversations_btn">Conversations</string>
+    <string name="users_btn">Users</string>
+    <string name="message_hint">Write message</string>
+    <string name="send_btn">Send</string>
+    <string name="conversation_name_hint">Enter a conv name</string>
+    <string name="create_conversation_btn">Create</string>
+    <string name="add_conversation_btn" translatable="false">+</string>
+    <string name="search">Search</string>
+    <string name="no_conversation">No message</string>
+    <string name="ok">OK</string>
 </resources>
 
 
