@@ -32,10 +32,10 @@
             android:id="@+id/email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/fui_auth_method_button_margin"
             android:layout_weight="1"
             android:maxWidth="@dimen/fui_auth_method_button_width"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:layout_marginBottom="5dp"/>
 
         <LinearLayout
             android:id="@+id/userRowBtnLayout"
@@ -45,15 +45,21 @@
 
             <Button
                 android:id="@+id/sendRequestBtn"
+                android:background="@drawable/button"
+                android:textColor="@color/textColor"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="30dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"/>
 
             <Button
                 android:id="@+id/annulationRequest"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@android:color/holo_red_dark"
-                android:textColor="@android:color/white" />
+                android:background="@drawable/button_reject"
+                android:layout_height="30dp"
+                android:textColor="@android:color/white"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"/>
         </LinearLayout>
     </LinearLayout>
 

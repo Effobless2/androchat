@@ -4,7 +4,9 @@
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
     <color name="backgroundButton">#FFFFFF</color>
-    <color name="backgroundMain">#8bfdc1</color>
-    <color name="buttonStroke">#73E6C9</color>
-    <color name="buttonTextColor">#7FDBFE</color>
+    <color name="backgroundMain">#e6e6e6</color>
+    <color name="buttonStroke">#ababab</color>
+    <color name="textColor">#787878</color>
+    <color name="toolbarColor">#666666</color>
+    <color name="backgroundButtonReject">#b00000</color>
 </resources>

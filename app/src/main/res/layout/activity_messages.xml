@@ -11,7 +11,8 @@
         android:id="@+id/messagesList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:transcriptMode="alwaysScroll">
 
     </ListView>
 
@@ -19,13 +20,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
-        android:layout_weight="10">
+        android:layout_weight="6">
 
         <EditText
             android:id="@+id/messageText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:backgroundTint="@color/textColor"
             android:ems="10"
             android:inputType="textPersonName"
             android:layout_margin="10dp"

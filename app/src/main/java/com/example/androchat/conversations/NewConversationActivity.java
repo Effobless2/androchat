@@ -1,14 +1,13 @@
 package com.example.androchat.conversations;
 
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ListView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -16,22 +15,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.androchat.R;
 import com.example.androchat.adapters.ContactRecyclerAdapter;
-import com.example.androchat.adapters.ContactsAdapter;
 import com.example.firelib.managers.ConversationManagement;
 import com.example.localDB.repositories.userRepositories.UserDataAccessRepository;
 import com.example.model.Conversation;
-import com.example.model.RelUserConv;
 import com.example.model.User;
 import com.example.notifications.NotificationsService;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.loopj.android.http.AsyncHttpResponseHandler;
 
 import java.util.Date;
 import java.util.List;
-
-import cz.msebera.android.httpclient.Header;
 
 public class NewConversationActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
@@ -42,6 +36,9 @@ public class NewConversationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_conversation);
+        ActionBar actionBar = this.getSupportActionBar();
+        ColorDrawable colorDrawable = new ColorDrawable(getResources().getColor(R.color.toolbarColor));
+        actionBar.setBackgroundDrawable(colorDrawable);
         recyclerView = (RecyclerView) findViewById(R.id.contacts);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);

@@ -1,8 +1,6 @@
 package com.example.androchat.adapters;
 
-import android.app.Activity;
 import android.content.Context;
-import android.text.Layout;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,7 +18,6 @@ import androidx.lifecycle.Observer;
 import com.example.androchat.R;
 import com.example.firelib.managers.UserManagement;
 import com.example.localDB.repositories.userRepositories.UserDataAccessRepository;
-import com.example.model.Conversation;
 import com.example.model.Message;
 import com.example.model.User;
 import com.google.android.gms.tasks.Continuation;

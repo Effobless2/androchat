@@ -13,6 +13,8 @@
         android:layout_height="match_parent"
         android:layout_weight="10"
         android:layout_gravity="right"
+        android:background="@drawable/button"
+        android:textColor="@color/textColor"
         android:text="@string/add_conversation_btn" />
 
     <ListView

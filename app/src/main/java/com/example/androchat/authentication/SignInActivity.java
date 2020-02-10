@@ -1,14 +1,13 @@
 package com.example.androchat.authentication;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.androchat.MainActivity;
 import com.example.androchat.R;
@@ -33,6 +32,9 @@ public class SignInActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
+        ActionBar actionBar = this.getSupportActionBar();
+        ColorDrawable colorDrawable = new ColorDrawable(getResources().getColor(R.color.toolbarColor));
+        actionBar.setBackgroundDrawable(colorDrawable);
         findViewById(R.id.imageButton2).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -47,10 +49,6 @@ public class SignInActivity extends AppCompatActivity {
                                 .build(), RC_SIGN_IN);
             }
         });
-
-        ActionBar actionBar = this.getSupportActionBar();
-        ColorDrawable colorDrawable = new ColorDrawable(Color.parseColor("#7FDBFE"));
-        actionBar.setBackgroundDrawable(colorDrawable);
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if(user != null){

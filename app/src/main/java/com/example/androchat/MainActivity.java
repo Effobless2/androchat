@@ -3,7 +3,6 @@ package com.example.androchat;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -59,7 +58,7 @@ public class MainActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ActionBar actionBar = this.getSupportActionBar();
-        ColorDrawable colorDrawable = new ColorDrawable(Color.parseColor("#7FDBFE"));
+        ColorDrawable colorDrawable = new ColorDrawable(getResources().getColor(R.color.toolbarColor));
         actionBar.setBackgroundDrawable(colorDrawable);
 
         this.setTitle(this.getResources().getString(R.string.hello) + FirebaseAuth.getInstance().getCurrentUser().getEmail());

@@ -1,12 +1,13 @@
 package com.example.androchat.conversations;
 
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
@@ -36,6 +37,9 @@ public class MessagesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_messages);
+        ActionBar actionBar = this.getSupportActionBar();
+        ColorDrawable colorDrawable = new ColorDrawable(getResources().getColor(R.color.toolbarColor));
+        actionBar.setBackgroundDrawable(colorDrawable);
         conversation = (Conversation) getIntent().getSerializableExtra(Conversation.SERIAL_KEY);
         setTitle(conversation.getName());
         lifecycle = this;
