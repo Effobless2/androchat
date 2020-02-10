@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".friendRequest.SearchUserFragment"
     android:orientation="vertical"
-    android:background="@color/colorPrimary">
+    android:background="@color/backgroundMain">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -31,12 +31,15 @@
 
         <Button
             android:id="@+id/btn_search_user"
+
+            android:textColor="@color/buttonTextColor"
+            android:textSize="10sp"
+            android:background="@drawable/button"
+
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="2"
             android:text="Rechercher"
-            android:textColor="#009688"
-            android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 

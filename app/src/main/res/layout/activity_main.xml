@@ -5,7 +5,7 @@
     android:id="@+id/layoutMain"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorAccent"
+    android:background="@color/backgroundMain"
     android:orientation="vertical"
     tools:context=".MainActivity">
 
@@ -38,14 +38,19 @@
 
             <Button
                 android:id="@+id/btn_logout"
+
+                android:textColor="@color/buttonTextColor"
+                android:textSize="10sp"
+                android:background="@drawable/button"
+
+                android:shadowColor="@color/buttonStroke"
+                android:shadowRadius="5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:onClick="logoutOnClic"
                 android:text="Deconnexion"
-                android:textColor="#E91E63"
-                android:textSize="10sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -70,7 +75,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:layout_weight="5"
-        android:background="@color/colorAccent"
+        android:background="@color/backgroundMain"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -79,33 +84,43 @@
 
         <Button
             android:id="@+id/btn_contact"
+
+            android:textColor="@color/buttonTextColor"
+            android:textSize="10sp"
+            android:background="@drawable/button"
+
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:onClick="contactOnClic"
-            android:text="contact"
-            android:textColor="#E91E63"
-            android:textSize="10sp" />
+            android:text="contact" />
 
         <Button
             android:id="@+id/btn_conversation"
+
+            android:textColor="@color/buttonTextColor"
+            android:textSize="10sp"
+            android:background="@drawable/button"
+
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:onClick="conversationOnClic"
-            android:text="conversation"
-            android:textColor="#E91E63"
-            android:textSize="10sp" />
+            android:text="conversation"/>
 
         <Button
             android:id="@+id/btn-request_user"
+
+            android:textColor="@color/buttonTextColor"
+            android:textSize="10sp"
+            android:background="@drawable/button"
+
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:onClick="searchFriendOnClic"
-            android:text="demande d'ami"
-            android:textColor="#E91E63"
-            android:textSize="10sp" />
+            android:text="demande d'ami" />
+
     </LinearLayout>
 
 </LinearLayout>

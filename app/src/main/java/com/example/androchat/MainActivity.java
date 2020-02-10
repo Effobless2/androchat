@@ -3,6 +3,8 @@ package com.example.androchat;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -11,6 +13,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -57,7 +60,12 @@ public class MainActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ActionBar actionBar = this.getSupportActionBar();
+        ColorDrawable colorDrawable = new ColorDrawable(Color.parseColor("#7FDBFE"));
+        actionBar.setBackgroundDrawable(colorDrawable);
+
         this.setTitle("Hello " + FirebaseAuth.getInstance().getCurrentUser().getEmail());
+
         fm = getSupportFragmentManager();
         conversationOnClic(null);
     }

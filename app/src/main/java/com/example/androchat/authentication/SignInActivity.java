@@ -1,9 +1,12 @@
 package com.example.androchat.authentication;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
 
@@ -44,6 +47,10 @@ public class SignInActivity extends AppCompatActivity {
                                 .build(), RC_SIGN_IN);
             }
         });
+
+        ActionBar actionBar = this.getSupportActionBar();
+        ColorDrawable colorDrawable = new ColorDrawable(Color.parseColor("#7FDBFE"));
+        actionBar.setBackgroundDrawable(colorDrawable);
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if(user != null){
