@@ -4,7 +4,6 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
-import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -42,8 +41,6 @@ import java.util.List;
 import java.util.Random;
 
 import cz.msebera.android.httpclient.Header;
-
-import static android.app.Activity.RESULT_OK;
 
 public class NotificationsService extends FirebaseMessagingService {
 
@@ -167,6 +164,7 @@ public class NotificationsService extends FirebaseMessagingService {
     }
 
     private void newConversation(String conversationId) {
+        subscribe(conversationId);
         ConversationManagement.getConversationById(conversationId).continueWith(new Continuation<Conversation, Object>() {
             @Override
             public Object then(@NonNull Task<Conversation> task) throws Exception {
