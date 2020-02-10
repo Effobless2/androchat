@@ -62,7 +62,10 @@ public class MessagesActivity extends AppCompatActivity {
     }
 
     private void sendMessage() {
-        final String messageTxt = ((EditText)findViewById(R.id.messageText)).getText().toString();
+        EditText editMsg = findViewById(R.id.messageText);
+        final String messageTxt = editMsg.getText().toString();
+        editMsg.setText("");
+
         final Message message = new Message();
         message.setContent(messageTxt);
         message.setDate(new Date());
