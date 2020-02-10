@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 import android.view.View;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -23,7 +22,6 @@ import com.example.androchat.conversations.ConversationsList;
 import com.example.androchat.friendRequest.SearchUserFragment;
 import com.example.androchat.localFriends.ContactsFragment;
 import com.example.baseWatcherService.BaseListenerService;
-import com.example.notifications.NotificationsService;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -127,17 +125,12 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     public void contactOnClic(View view) {
-        TextView title = (TextView) findViewById(R.id.title);
-        title.setText("Contacts");
         FragmentTransaction ft = fm.beginTransaction();
         ft.replace(R.id.fragmentMain, new ContactsFragment());
         ft.commit();
     }
 
     public void conversationOnClic(View view) {
-        TextView title = (TextView) findViewById(R.id.title);
-        title.setText("Conversations");
-
         Log.v("CLIC : ","button conversation");
         FragmentTransaction ft = fm.beginTransaction();
         ft.replace(R.id.fragmentMain, new ConversationsList());
@@ -145,9 +138,6 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     public void searchFriendOnClic(View view) {
-        TextView title = (TextView) findViewById(R.id.title);
-        title.setText("Recherche d'amis");
-
         Log.v("CLIC : ","button recherche ami");
         FragmentTransaction ft = fm.beginTransaction();
         ft.replace(R.id.fragmentMain, new SearchUserFragment());
