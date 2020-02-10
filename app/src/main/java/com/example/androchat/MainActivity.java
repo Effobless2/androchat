@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements
         ColorDrawable colorDrawable = new ColorDrawable(Color.parseColor("#7FDBFE"));
         actionBar.setBackgroundDrawable(colorDrawable);
 
-        this.setTitle("Hello " + FirebaseAuth.getInstance().getCurrentUser().getEmail());
+        this.setTitle(this.getResources().getString(R.string.hello) + FirebaseAuth.getInstance().getCurrentUser().getEmail());
 
         fm = getSupportFragmentManager();
         conversationOnClic(null);

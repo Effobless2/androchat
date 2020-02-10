@@ -15,6 +15,13 @@
     <string name="search">Search</string>
     <string name="no_conversation">No message</string>
     <string name="ok">OK</string>
+    <string name="accept">Accept</string>
+    <string name="reject">Reject</string>
+    <string name="cancel">Cancel</string>
+    <string name="user_not_found">User not found!</string>
+    <string name="hello">"Hi "</string>
+    <string name="invitation">You have been add to a conversation!</string>
+    <string name="friend_request">You have a new friend request!</string>
 </resources>
 
 

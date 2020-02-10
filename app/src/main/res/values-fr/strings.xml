@@ -6,9 +6,16 @@
     <string name="users_btn">Utilisateurs</string>
     <string name="message_hint">Ecrire un message</string>
     <string name="send_btn">Envoyer</string>
-    <string name="conversation_name_hint">Entrer un nom de conversation</string>
+    <string name="conversation_name_hint">Entrer un nom de conv</string>
     <string name="create_conversation_btn">Créer</string>
     <string name="search">Rechercher</string>
     <string name="no_conversation">Pas de message</string>
     <string name="ok">OK</string>
+    <string name="accept">Accepter</string>
+    <string name="reject">Refuser</string>
+    <string name="cancel">Annuler</string>
+    <string name="hello">"Salut "</string>
+    <string name="invitation">Tu as été ajouté(e) à une nouvelle conversation !</string>
+    <string name="user_not_found">Utilisateur introuvable !</string>
+    <string name="friend_request">Tu as une nouvelle demande d\'ami !</string>
 </resources>
