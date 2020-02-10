@@ -9,9 +9,9 @@
 
     <Button
         android:id="@+id/newConvBtn"
-        android:layout_width="wrap_content"
+        android:layout_width="30dp"
         android:layout_height="match_parent"
-        android:layout_weight="10"
+        android:layout_weight="12"
         android:layout_gravity="right"
         android:background="@drawable/button"
         android:textColor="@color/textColor"
