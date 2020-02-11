@@ -116,6 +116,10 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
         }
 
         private void displayUserDatas(){
+            if(FirebaseAuth.getInstance().getCurrentUser().getUid().equals(message.getId_user())){
+                setUserDatas(null);
+                return;
+            }
             new UserDataAccessRepository(layoutInflater.getContext()).getUserByGoogleId(message.getId_user()).observe(activity, new Observer<List<User>>() {
                 @Override
                 public void onChanged(List<User> users) {
@@ -137,8 +141,14 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
             });
         }
         private void setUserDatas(User user){
-            ((TextView)view.findViewById(R.id.emailTxt)).setText(user.getEmail());
-            String avatar = user.getAvatar();
+            String avatar;
+            if(user == null){
+                avatar = FirebaseAuth.getInstance().getCurrentUser().getPhotoUrl().toString();
+                ((TextView)view.findViewById(R.id.emailTxt)).setText("");
+            } else {
+                ((TextView)view.findViewById(R.id.emailTxt)).setText(user.getEmail());
+                avatar = user.getAvatar();
+            }
 
             ImageView imageView = view.findViewById(R.id.userAvatar);
             if (avatar != null) {

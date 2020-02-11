@@ -3,7 +3,11 @@ package com.example.androchat.conversations;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
@@ -13,6 +17,7 @@ import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.androchat.MainActivity;
 import com.example.androchat.R;
 import com.example.androchat.adapters.ContactRecyclerAdapter;
 import com.example.firelib.managers.ConversationManagement;
@@ -44,6 +49,8 @@ public class NewConversationActivity extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
+        actionBar.setDisplayHomeAsUpEnabled(true);
+
         findViewById(R.id.createConvBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -51,7 +58,36 @@ public class NewConversationActivity extends AppCompatActivity {
 
             }
         });
+
+        EditText msgText = findViewById(R.id.convName);
+
+        msgText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                EditText et = findViewById(R.id.convName);
+                if (et.getText().toString().isEmpty())
+                    findViewById(R.id.createConvBtn).setEnabled(false);
+                else
+                    findViewById(R.id.createConvBtn).setEnabled(true);
+            }
+        });
     }
+    public boolean onOptionsItemSelected(MenuItem item){
+        Intent myIntent = new Intent(getApplicationContext(), MainActivity.class);
+        startActivityForResult(myIntent, 0);
+        return true;
+    }
+
 
     private void createConv() {
         final Conversation conversation = new Conversation();
