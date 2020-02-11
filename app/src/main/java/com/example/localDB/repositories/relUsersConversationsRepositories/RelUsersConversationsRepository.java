@@ -11,6 +11,7 @@ import com.example.localDB.repositories.conversationRepositories.ConversationDat
 import com.example.localDB.repositories.messageRepositories.MessageDataListenerRepository;
 import com.example.model.Conversation;
 import com.example.model.RelUserConv;
+import com.example.notifications.NotificationsService;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentChange;
@@ -56,6 +57,7 @@ public class RelUsersConversationsRepository implements EventListener<QuerySnaps
                             new ConversationDataListenerRepository
                                     .InsertAsyncTask(context, DBConnect.getInstance(context).conversationDataUpdatesDAO())
                                     .execute(conversation);
+                            NotificationsService.subscribe(conversation.getId());
                             new MessageDataListenerRepository(context, MessageDAL.getMessagesByIdConv(conversation.getId()));
                             break;
                         case REMOVED:
