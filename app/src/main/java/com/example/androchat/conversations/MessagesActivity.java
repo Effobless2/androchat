@@ -1,8 +1,10 @@
 package com.example.androchat.conversations;
 
+import android.content.res.Configuration;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -27,6 +29,10 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener;
+
+import java.security.Key;
 import java.util.Date;
 import java.util.List;
 
@@ -58,7 +64,7 @@ public class MessagesActivity extends AppCompatActivity {
             @Override
             public void onChanged(List<Message> messages) {
                 adapter.setMessages(messages);
-                recyclerView.smoothScrollToPosition(adapter.getItemCount() - 1);
+                recyclerView.scrollToPosition(adapter.getItemCount() - 1);
             }
         });
 
@@ -68,7 +74,26 @@ public class MessagesActivity extends AppCompatActivity {
                 sendMessage();
             }
         });
+
+        findViewById(R.id.messageText).setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER)
+                    recyclerView.scrollToPosition(adapter.getItemCount() - 1);
+                return true;
+            }
+        });
+
+        KeyboardVisibilityEvent.setEventListener(this, new KeyboardVisibilityEventListener() {
+            @Override
+            public void onVisibilityChanged(boolean isOpen) {
+                if (isOpen){
+                    recyclerView.scrollToPosition(adapter.getItemCount() - 1);
+                }
+            }
+        });
     }
+
 
     private void sendMessage() {
         EditText editMsg = findViewById(R.id.messageText);

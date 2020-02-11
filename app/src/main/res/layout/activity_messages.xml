@@ -34,7 +34,7 @@
             android:backgroundTint="@color/textColor"
             android:ems="10"
             android:hint="@string/message_hint"
-            android:inputType="textPersonName" />
+            android:inputType="textMultiLine"  />
 
         <Button
             android:id="@+id/sendBtn"
