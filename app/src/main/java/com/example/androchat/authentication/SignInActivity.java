@@ -35,7 +35,7 @@ public class SignInActivity extends AppCompatActivity {
         ActionBar actionBar = this.getSupportActionBar();
         ColorDrawable colorDrawable = new ColorDrawable(getResources().getColor(R.color.toolbarColor));
         actionBar.setBackgroundDrawable(colorDrawable);
-        findViewById(R.id.imageButton2).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.sign_in_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 List<AuthUI.IdpConfig> providers = Arrays.asList(

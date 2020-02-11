@@ -14,7 +14,6 @@ import androidx.annotation.Nullable;
 import com.example.androchat.R;
 import com.example.androchat.conversations.MessagesActivity;
 import com.example.model.Conversation;
-import com.example.model.User;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -37,11 +36,11 @@ public class ConversationsAdapter extends ArrayAdapter<Conversation> {
         ((TextView)convRow.findViewById(R.id.convName)).setText(conversation.getName());
 
         String date;
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         String today = formatter.format(new Date());
         String convDate = formatter.format(conversation.getLast_message_date());
         if (today.compareTo(convDate) == 0){
-            date = new SimpleDateFormat("hh:mm").format(conversation.getLast_message_date());
+            date = new SimpleDateFormat("HH:mm").format(conversation.getLast_message_date());
         }
         else {
             date = convDate;
