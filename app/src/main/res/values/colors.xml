@@ -9,4 +9,6 @@
     <color name="textColor">#787878</color>
     <color name="toolbarColor">#666666</color>
     <color name="backgroundButtonReject">#b00000</color>
+    <color name="chat_message_background_incoming">#a1a1a1</color>
+    <color name="chat_message_background_outcoming">#c7c7c7</color>
 </resources>

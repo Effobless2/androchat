@@ -4,11 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/list_message_main">
+    android:id="@+id/list_message_main"
+    android:layout_margin="10sp">
 
     <LinearLayout
         android:id="@+id/userPanel"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
@@ -30,13 +31,13 @@
 
             <TextView
                 android:id="@+id/emailTxt"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1" />
 
             <TextView
                 android:id="@+id/dateTxt"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1" />
         </LinearLayout>
@@ -45,7 +46,10 @@
 
     <TextView
         android:id="@+id/messageTxt"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        android:paddingVertical="5sp"
+        android:paddingHorizontal="30sp"
+        android:maxWidth="300sp"/>
 </LinearLayout>

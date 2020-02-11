@@ -104,8 +104,14 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 
         private void definePosition(){
             if(message.getId_user().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())){
-                ((LinearLayout)view.findViewById(R.id.list_message_main)).setGravity(Gravity.RIGHT);
+                ((LinearLayout)view).setGravity(Gravity.RIGHT);
                 ((LinearLayout)view.findViewById(R.id.userPanel)).setGravity(Gravity.RIGHT);
+                ((TextView)view.findViewById(R.id.messageTxt)).setBackground(layoutInflater.getContext().getResources().getDrawable(R.drawable.outcoming_message_shape));
+            }
+            else {
+                ((LinearLayout)view).setGravity(Gravity.LEFT);
+                ((LinearLayout)view.findViewById(R.id.userPanel)).setGravity(Gravity.LEFT);
+                ((TextView)view.findViewById(R.id.messageTxt)).setBackground(layoutInflater.getContext().getResources().getDrawable(R.drawable.incoming_message_shape));
             }
         }
 
