@@ -11,6 +11,8 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.androchat.R;
 import com.example.androchat.adapters.MessageAdapter;
@@ -31,7 +33,8 @@ import cz.msebera.android.httpclient.Header;
 
 public class MessagesActivity extends AppCompatActivity {
     Conversation conversation;
-    public static LifecycleOwner lifecycle;
+    MessageAdapter adapter;
+    RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,18 +45,19 @@ public class MessagesActivity extends AppCompatActivity {
         actionBar.setBackgroundDrawable(colorDrawable);
         conversation = (Conversation) getIntent().getSerializableExtra(Conversation.SERIAL_KEY);
         setTitle(conversation.getName());
-        lifecycle = this;
+
+        adapter = new MessageAdapter(getApplicationContext(), this);
+        recyclerView = findViewById(R.id.messagesList);
+        LinearLayoutManager l = new LinearLayoutManager(this);
+
+        recyclerView.setLayoutManager(l);
+        recyclerView.setAdapter(adapter);
 
         new MessageDataAccessRepository(this).getMessagesByConversation(conversation.getId()).observe(this, new Observer<List<Message>>() {
             @Override
             public void onChanged(List<Message> messages) {
-                MessageAdapter adapter = new MessageAdapter(
-                        lifecycle,
-                        getApplicationContext(),
-                        messages
-
-                );
-                ((ListView) findViewById(R.id.messagesList)).setAdapter(adapter);
+                adapter.setMessages(messages);
+                recyclerView.smoothScrollToPosition(adapter.getItemCount() - 1);
             }
         });
 
