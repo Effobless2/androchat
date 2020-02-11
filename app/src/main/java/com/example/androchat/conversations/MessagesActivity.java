@@ -2,6 +2,7 @@ package com.example.androchat.conversations;
 
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -46,8 +47,8 @@ public class MessagesActivity extends AppCompatActivity {
         conversation = (Conversation) getIntent().getSerializableExtra(Conversation.SERIAL_KEY);
         setTitle(conversation.getName());
 
-        adapter = new MessageAdapter(getApplicationContext(), this);
         recyclerView = findViewById(R.id.messagesList);
+        adapter = new MessageAdapter(getApplicationContext(), this);
         LinearLayoutManager l = new LinearLayoutManager(this);
 
         recyclerView.setLayoutManager(l);
