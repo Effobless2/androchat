@@ -25,7 +25,8 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Display1"
             android:textColor="@color/textColor"
             android:backgroundTint="@color/textColor"
-            android:textSize="16sp"/>
+            android:textSize="16sp"
+            android:textCursorDrawable="@drawable/cursor_color"/>
 
         <Button
             android:id="@+id/btn_search_user"
