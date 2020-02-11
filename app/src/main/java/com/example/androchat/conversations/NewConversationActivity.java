@@ -3,6 +3,7 @@ package com.example.androchat.conversations;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 
@@ -13,6 +14,7 @@ import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.androchat.MainActivity;
 import com.example.androchat.R;
 import com.example.androchat.adapters.ContactRecyclerAdapter;
 import com.example.firelib.managers.ConversationManagement;
@@ -44,6 +46,8 @@ public class NewConversationActivity extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
+        actionBar.setDisplayHomeAsUpEnabled(true);
+
         findViewById(R.id.createConvBtn).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -52,6 +56,12 @@ public class NewConversationActivity extends AppCompatActivity {
             }
         });
     }
+    public boolean onOptionsItemSelected(MenuItem item){
+        Intent myIntent = new Intent(getApplicationContext(), MainActivity.class);
+        startActivityForResult(myIntent, 0);
+        return true;
+    }
+
 
     private void createConv() {
         final Conversation conversation = new Conversation();

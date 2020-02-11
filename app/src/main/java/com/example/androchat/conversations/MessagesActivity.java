@@ -1,10 +1,12 @@
 package com.example.androchat.conversations;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.KeyEvent;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -17,6 +19,7 @@ import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.androchat.MainActivity;
 import com.example.androchat.R;
 import com.example.androchat.adapters.MessageAdapter;
 import com.example.firelib.managers.MessageManagement;
@@ -48,6 +51,7 @@ public class MessagesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_messages);
         ActionBar actionBar = this.getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
         ColorDrawable colorDrawable = new ColorDrawable(getResources().getColor(R.color.toolbarColor));
         actionBar.setBackgroundDrawable(colorDrawable);
         conversation = (Conversation) getIntent().getSerializableExtra(Conversation.SERIAL_KEY);
@@ -92,6 +96,12 @@ public class MessagesActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item){
+        Intent myIntent = new Intent(getApplicationContext(), MainActivity.class);
+        startActivityForResult(myIntent, 0);
+        return true;
     }
 
 
