@@ -27,6 +27,7 @@ import com.example.model.User;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -204,6 +205,9 @@ public class NotificationsService extends FirebaseMessagingService {
                                 conversation,
                                 message
                         );
+                        if(FirebaseAuth.getInstance().getCurrentUser().getUid().equals(message.getId_user())){
+                            return null;
+                        }
                         AndrochatWidget.conversation = conversation;
                         AndrochatWidget.message = message;
                         int[] ids = AppWidgetManager.getInstance(getApplication()).getAppWidgetIds(new ComponentName(getApplication(), AndrochatWidget.class));
