@@ -3,8 +3,11 @@ package com.example.androchat.conversations;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
@@ -53,6 +56,29 @@ public class NewConversationActivity extends AppCompatActivity {
             public void onClick(View v) {
                 createConv();
 
+            }
+        });
+
+        EditText msgText = findViewById(R.id.convName);
+
+        msgText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                EditText et = findViewById(R.id.convName);
+                if (et.getText().toString().isEmpty())
+                    findViewById(R.id.createConvBtn).setEnabled(false);
+                else
+                    findViewById(R.id.createConvBtn).setEnabled(true);
             }
         });
     }

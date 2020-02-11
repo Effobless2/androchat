@@ -1,20 +1,19 @@
 package com.example.androchat.conversations;
 
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.os.Handler;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -35,7 +34,6 @@ import com.loopj.android.http.AsyncHttpResponseHandler;
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener;
 
-import java.security.Key;
 import java.util.Date;
 import java.util.List;
 
@@ -79,12 +77,37 @@ public class MessagesActivity extends AppCompatActivity {
             }
         });
 
-        findViewById(R.id.messageText).setOnKeyListener(new View.OnKeyListener() {
+        EditText msgText = findViewById(R.id.messageText);
+
+        msgText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                EditText et = findViewById(R.id.messageText);
+                if (et.getText().toString().isEmpty())
+                    ((Button) findViewById(R.id.sendBtn)).setEnabled(false);
+                else
+                    ((Button) findViewById(R.id.sendBtn)).setEnabled(true);
+            }
+        });
+        msgText.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER)
-                    recyclerView.scrollToPosition(adapter.getItemCount() - 1);
-                return true;
+                if(event.getAction() == KeyEvent.ACTION_DOWN){
+                    if (keyCode == KeyEvent.KEYCODE_ENTER) {
+                        recyclerView.scrollToPosition(adapter.getItemCount() - 1);
+                    }
+                }
+                return false;
             }
         });
 
