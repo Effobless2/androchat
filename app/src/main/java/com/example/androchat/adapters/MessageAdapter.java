@@ -86,11 +86,11 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 
         private void displayDate(){
             String date;
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
+            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
             String today = formatter.format(new Date());
             String convDate = formatter.format(message.getDate());
             if (today.compareTo(convDate) == 0){
-                date = new SimpleDateFormat("hh:mm").format(message.getDate());
+                date = new SimpleDateFormat("HH:mm").format(message.getDate());
             }
             else {
                 date = convDate;
