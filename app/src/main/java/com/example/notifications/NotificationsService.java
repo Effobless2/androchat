@@ -4,7 +4,6 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
-import android.appwidget.AppWidgetProvider;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -18,7 +17,7 @@ import androidx.core.app.NotificationCompat;
 import com.example.androchat.MainActivity;
 import com.example.androchat.R;
 import com.example.androchat.conversations.MessagesActivity;
-import com.example.androchat.widget.widget;
+import com.example.androchat.widget.AndrochatWidget;
 import com.example.firelib.managers.ConversationManagement;
 import com.example.firelib.managers.MessageManagement;
 import com.example.firelib.managers.UserManagement;
@@ -42,8 +41,6 @@ import java.util.List;
 import java.util.Random;
 
 import cz.msebera.android.httpclient.Header;
-
-import static android.app.Activity.RESULT_OK;
 
 public class NotificationsService extends FirebaseMessagingService {
 
@@ -167,6 +164,7 @@ public class NotificationsService extends FirebaseMessagingService {
     }
 
     private void newConversation(String conversationId) {
+        subscribe(conversationId);
         ConversationManagement.getConversationById(conversationId).continueWith(new Continuation<Conversation, Object>() {
             @Override
             public Object then(@NonNull Task<Conversation> task) throws Exception {
@@ -199,18 +197,18 @@ public class NotificationsService extends FirebaseMessagingService {
                     @Override
                     public Object then(@NonNull Task<Message> task) throws Exception {
                         Message message = task.getResult();
-                        widget.updateWidget(
+                        AndrochatWidget.updateWidget(
                                 getApplicationContext(),
                                 AppWidgetManager.getInstance(getApplicationContext()),
-                                widget.appwidgetid,
+                                AndrochatWidget.appwidgetid,
                                 conversation,
                                 message
                         );
-                        widget.conversation = conversation;
-                        widget.message = message;
-                        int[] ids = AppWidgetManager.getInstance(getApplication()).getAppWidgetIds(new ComponentName(getApplication(), widget.class));
-                        widget myWidget = new widget();
-                        myWidget.onUpdate(getApplicationContext(), AppWidgetManager.getInstance(getApplicationContext()),ids);
+                        AndrochatWidget.conversation = conversation;
+                        AndrochatWidget.message = message;
+                        int[] ids = AppWidgetManager.getInstance(getApplication()).getAppWidgetIds(new ComponentName(getApplication(), AndrochatWidget.class));
+                        AndrochatWidget myAndrochatWidget = new AndrochatWidget();
+                        myAndrochatWidget.onUpdate(getApplicationContext(), AppWidgetManager.getInstance(getApplicationContext()),ids);
                         createMessageNotification(conversation, message);
                         return null;
                     }
@@ -288,7 +286,7 @@ public class NotificationsService extends FirebaseMessagingService {
                 new NotificationCompat.Builder(this, channelId)
                         .setSmallIcon(R.drawable.common_google_signin_btn_icon_dark)
                         .setContentTitle(conversation.getName())
-                        .setContentText("Vous avez été invité dans la conversation !")
+                        .setContentText(this.getResources().getString(R.string.invitation))
                         .setAutoCancel(true)
                         .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
                         .setContentIntent(pendingIntent)
@@ -325,7 +323,7 @@ public class NotificationsService extends FirebaseMessagingService {
                 new NotificationCompat.Builder(this, channelId)
                         .setSmallIcon(R.drawable.common_google_signin_btn_icon_dark)
                         .setContentTitle(user.getEmail())
-                        .setContentText("Vous a envoyé une demande d'amis !")
+                        .setContentText(this.getResources().getString(R.string.friend_request))
                         .setAutoCancel(true)
                         .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
                         .setContentIntent(pendingIntent)

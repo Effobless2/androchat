@@ -3,4 +3,12 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+    <color name="backgroundButton">#FFFFFF</color>
+    <color name="backgroundMain">#e6e6e6</color>
+    <color name="buttonStroke">#ababab</color>
+    <color name="textColor">#787878</color>
+    <color name="toolbarColor">#666666</color>
+    <color name="backgroundButtonReject">#b00000</color>
+    <color name="chat_message_background_incoming">#a1a1a1</color>
+    <color name="chat_message_background_outcoming">#c7c7c7</color>
 </resources>

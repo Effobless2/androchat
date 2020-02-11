@@ -1,36 +1,53 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:background="#55000000"
-    android:orientation="horizontal">
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/backgroundMain"
+    android:orientation="horizontal"
+    android:columnCount="1"
+    android:rowCount="2">
 
-    <LinearLayout
+    <TextView
+        android:background="@color/toolbarColor"
+        android:id="@+id/widgetConvNameText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="3"
-        android:orientation="vertical">
+        android:textSize="25sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:text="cacaacacaca"
+        app:layout_constraintVertical_bias="0.0" />
 
-        <TextView
-            android:id="@+id/widgetConvNameText"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="3"
-            android:text="TextView" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:gravity="right">
+
 
         <TextView
             android:id="@+id/widgetMessageText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="3"
-            android:maxWidth="150sp"
-            android:text="Totalement vide" />
+            android:minLines="3"
+            android:layout_weight="1"
+            android:text="@string/no_conversation" />
+
+        <Button
+            android:id="@+id/btn_widget"
+            android:layout_weight="5"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/backgroundButton"
+            android:text="@string/ok" />
+
     </LinearLayout>
 
-    <Button
-        android:id="@+id/btn_widget"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:text="OK" />
 
-</LinearLayout>
+
+</GridLayout>

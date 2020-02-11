@@ -1,15 +1,21 @@
 package com.example.androchat.conversations;
 
+import android.content.res.Configuration;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.view.KeyEvent;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.androchat.R;
 import com.example.androchat.adapters.MessageAdapter;
@@ -23,6 +29,10 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
+import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener;
+
+import java.security.Key;
 import java.util.Date;
 import java.util.List;
 
@@ -30,26 +40,31 @@ import cz.msebera.android.httpclient.Header;
 
 public class MessagesActivity extends AppCompatActivity {
     Conversation conversation;
-    public static LifecycleOwner lifecycle;
+    MessageAdapter adapter;
+    RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_messages);
+        ActionBar actionBar = this.getSupportActionBar();
+        ColorDrawable colorDrawable = new ColorDrawable(getResources().getColor(R.color.toolbarColor));
+        actionBar.setBackgroundDrawable(colorDrawable);
         conversation = (Conversation) getIntent().getSerializableExtra(Conversation.SERIAL_KEY);
         setTitle(conversation.getName());
-        lifecycle = this;
+
+        recyclerView = findViewById(R.id.messagesList);
+        adapter = new MessageAdapter(getApplicationContext(), this);
+        LinearLayoutManager l = new LinearLayoutManager(this);
+
+        recyclerView.setLayoutManager(l);
+        recyclerView.setAdapter(adapter);
 
         new MessageDataAccessRepository(this).getMessagesByConversation(conversation.getId()).observe(this, new Observer<List<Message>>() {
             @Override
             public void onChanged(List<Message> messages) {
-                MessageAdapter adapter = new MessageAdapter(
-                        lifecycle,
-                        getApplicationContext(),
-                        messages
-
-                );
-                ((ListView) findViewById(R.id.messagesList)).setAdapter(adapter);
+                adapter.setMessages(messages);
+                recyclerView.scrollToPosition(adapter.getItemCount() - 1);
             }
         });
 
@@ -59,10 +74,32 @@ public class MessagesActivity extends AppCompatActivity {
                 sendMessage();
             }
         });
+
+        findViewById(R.id.messageText).setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER)
+                    recyclerView.scrollToPosition(adapter.getItemCount() - 1);
+                return true;
+            }
+        });
+
+        KeyboardVisibilityEvent.setEventListener(this, new KeyboardVisibilityEventListener() {
+            @Override
+            public void onVisibilityChanged(boolean isOpen) {
+                if (isOpen){
+                    recyclerView.scrollToPosition(adapter.getItemCount() - 1);
+                }
+            }
+        });
     }
 
+
     private void sendMessage() {
-        final String messageTxt = ((EditText)findViewById(R.id.messageText)).getText().toString();
+        EditText editMsg = findViewById(R.id.messageText);
+        final String messageTxt = editMsg.getText().toString();
+        editMsg.setText("");
+
         final Message message = new Message();
         message.setContent(messageTxt);
         message.setDate(new Date());

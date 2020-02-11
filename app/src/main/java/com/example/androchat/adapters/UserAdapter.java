@@ -130,7 +130,7 @@ public class UserAdapter extends ArrayAdapter<User> {
         View btn = userRow.findViewById(R.id.sendRequestBtn);
         ((ViewGroup)btn.getParent()).removeView(btn);
         Button annulBtn = (Button) userRow.findViewById(R.id.annulationRequest);
-        annulBtn.setText("Annul");
+        annulBtn.setText(getContext().getResources().getString(R.string.cancel));
         annulBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -143,10 +143,10 @@ public class UserAdapter extends ArrayAdapter<User> {
     //Set Buttons for accepting friend request and Rejet it
     private void inRequestReceived(final View userRow, final User user){
         Button annulBtn = (Button) userRow.findViewById(R.id.annulationRequest);
-        annulBtn.setText("Reject");
+        annulBtn.setText(getContext().getResources().getString(R.string.reject));
 
         Button acceptBtn = userRow.findViewById(R.id.sendRequestBtn);
-        acceptBtn.setText("Accept");
+        acceptBtn.setText(getContext().getResources().getString(R.string.accept));
         acceptBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -168,7 +168,7 @@ public class UserAdapter extends ArrayAdapter<User> {
         View btn = userRow.findViewById(R.id.annulationRequest);
         ((ViewGroup)btn.getParent()).removeView(btn);
         Button acceptBtn = userRow.findViewById(R.id.sendRequestBtn);
-        acceptBtn.setText("Send");
+        acceptBtn.setText(getContext().getResources().getString(R.string.send_btn));
         acceptBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

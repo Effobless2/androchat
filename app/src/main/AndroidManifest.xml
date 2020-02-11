@@ -11,10 +11,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".conversations.MessagesActivity"></activity>
-        <activity android:name=".conversations.NewConversationActivity" />
+        <activity android:name=".conversations.MessagesActivity"
+            android:windowSoftInputMode="adjustResize"/>
+        <activity android:name=".conversations.NewConversationActivity"
+            android:windowSoftInputMode="adjustPan"/>
 
-        <receiver android:name=".widget.widget">
+        <receiver android:name=".widget.AndrochatWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
@@ -33,7 +35,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity" /> <!-- NOTIFICATION SERVICE -->
+        <activity android:name=".MainActivity"
+            android:windowSoftInputMode="adjustPan"/>
+        <!-- NOTIFICATION SERVICE -->
         <service
             android:name="com.example.notifications.NotificationsService"
             android:permission="com.google.android.c2dm.permission.SEND">
@@ -47,7 +51,7 @@
             android:enabled="true"
             android:exported="true" />
 
-        <receiver android:name=".widget.widget">
+        <receiver android:name=".widget.AndrochatWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>

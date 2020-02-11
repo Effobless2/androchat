@@ -3,14 +3,15 @@ package com.example.androchat;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 import android.view.View;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -20,7 +21,6 @@ import com.example.androchat.conversations.ConversationsList;
 import com.example.androchat.friendRequest.SearchUserFragment;
 import com.example.androchat.localFriends.ContactsFragment;
 import com.example.baseWatcherService.BaseListenerService;
-import com.example.notifications.NotificationsService;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -57,7 +57,12 @@ public class MainActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        this.setTitle("Hello " + FirebaseAuth.getInstance().getCurrentUser().getEmail());
+        ActionBar actionBar = this.getSupportActionBar();
+        ColorDrawable colorDrawable = new ColorDrawable(getResources().getColor(R.color.toolbarColor));
+        actionBar.setBackgroundDrawable(colorDrawable);
+
+        this.setTitle(this.getResources().getString(R.string.hello) + FirebaseAuth.getInstance().getCurrentUser().getEmail());
+
         fm = getSupportFragmentManager();
         conversationOnClic(null);
     }
@@ -119,17 +124,12 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     public void contactOnClic(View view) {
-        TextView title = (TextView) findViewById(R.id.title);
-        title.setText("Contacts");
         FragmentTransaction ft = fm.beginTransaction();
         ft.replace(R.id.fragmentMain, new ContactsFragment());
         ft.commit();
     }
 
     public void conversationOnClic(View view) {
-        TextView title = (TextView) findViewById(R.id.title);
-        title.setText("Conversations");
-
         Log.v("CLIC : ","button conversation");
         FragmentTransaction ft = fm.beginTransaction();
         ft.replace(R.id.fragmentMain, new ConversationsList());
@@ -137,9 +137,6 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     public void searchFriendOnClic(View view) {
-        TextView title = (TextView) findViewById(R.id.title);
-        title.setText("Recherche d'amis");
-
         Log.v("CLIC : ","button recherche ami");
         FragmentTransaction ft = fm.beginTransaction();
         ft.replace(R.id.fragmentMain, new SearchUserFragment());

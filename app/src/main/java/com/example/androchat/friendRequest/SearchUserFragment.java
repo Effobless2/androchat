@@ -3,15 +3,16 @@ package com.example.androchat.friendRequest;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 
 import com.example.androchat.R;
 import com.example.androchat.adapters.UserAdapter;
@@ -19,13 +20,8 @@ import com.example.firelib.managers.UserManagement;
 import com.example.model.User;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentSnapshot;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -36,14 +32,6 @@ import androidx.fragment.app.Fragment;
  * create an instance of this fragment.
  */
 public class SearchUserFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     private OnFragmentInteractionListener mListener;
 
@@ -62,10 +50,6 @@ public class SearchUserFragment extends Fragment {
     // TODO: Rename and change types and number of parameters
     public static SearchUserFragment newInstance(String param1, String param2) {
         SearchUserFragment fragment = new SearchUserFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
         return fragment;
     }
 
@@ -78,13 +62,13 @@ public class SearchUserFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_search_user, container, false);
-        Button button = (Button) view.findViewById(R.id.btn_search_user);
+        Button button = view.findViewById(R.id.btn_search_user);
         button.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v)
             {
-                EditText mEdit = (EditText)getView().findViewById(R.id.edit_text_id);
+                EditText mEdit = getView().findViewById(R.id.edit_text_id);
                 String googleId = mEdit.getText().toString();
                 if(null == googleId || googleId.length() == 0)
                     getAllUser();
@@ -95,14 +79,14 @@ public class SearchUserFragment extends Fragment {
                                 public List<User> then(@NonNull Task<List<User>> task) throws Exception{
                                     List<User> result = task.getResult();
                                     if(result.size() > 0) {
-                                        ListView listView = (ListView) getView().findViewById(R.id.list_user);
+                                        ListView listView = getView().findViewById(R.id.list_user);
                                         UserAdapter listViewAdapter = new UserAdapter(
                                                 getActivity(),
                                                 result
                                         );
                                         listView.setAdapter(listViewAdapter);
                                     }else {
-                                        Toast.makeText(getActivity().getApplicationContext(), "User not found", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getActivity().getApplicationContext(), getContext().getResources().getString(R.string.user_not_found), Toast.LENGTH_SHORT).show();
                                     }
                                     return result;
                                 }
@@ -110,13 +94,6 @@ public class SearchUserFragment extends Fragment {
             }
         });
         return view;
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
     }
 
     @Override
@@ -163,7 +140,7 @@ public class SearchUserFragment extends Fragment {
                     @Override
                     public List<User> then(@NonNull Task<List<User>> task) throws Exception{
                         List<User> result = task.getResult();
-                        ListView listView = (ListView) getView().findViewById(R.id.list_user);
+                        ListView listView = getView().findViewById(R.id.list_user);
                         UserAdapter listViewAdapter = new UserAdapter(
                                 getActivity(),
                                 result

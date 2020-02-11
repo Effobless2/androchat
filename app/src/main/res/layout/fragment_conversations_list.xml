@@ -4,16 +4,18 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".conversations.ConversationsList"
-    android:background="@color/colorPrimary"
+    android:background="@color/backgroundMain"
     android:orientation="vertical">
 
     <Button
         android:id="@+id/newConvBtn"
-        android:layout_width="wrap_content"
+        android:layout_width="30dp"
         android:layout_height="match_parent"
-        android:layout_weight="10"
+        android:layout_weight="12"
         android:layout_gravity="right"
-        android:text="+" />
+        android:background="@drawable/button"
+        android:textColor="@color/textColor"
+        android:text="@string/add_conversation_btn" />
 
     <ListView
         android:id="@+id/conversation_list"

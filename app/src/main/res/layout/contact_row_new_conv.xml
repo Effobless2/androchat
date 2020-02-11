@@ -6,30 +6,25 @@
     android:layout_height="wrap_content"
     android:gravity="center_vertical">
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/avatar"
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:layout_marginLeft="@dimen/fui_auth_method_button_margin"
         android:layout_marginTop="@dimen/fui_auth_method_button_margin"
         android:layout_marginBottom="@dimen/fui_auth_method_button_margin"
-        android:adjustViewBounds="true"
-        android:maxWidth="70dp"
-        android:maxHeight="70dp"
-        android:minWidth="70dp"
-        android:minHeight="70dp"
-        tools:srcCompat="@tools:sample/avatars"
-        />
+        app:civ_border_width="2dp"
+        app:civ_border_color="#FF000000"/>
 
     <TextView
         android:id="@+id/email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="TextView"
-        android:maxWidth="@dimen/fui_auth_method_button_width"
         android:layout_margin="@dimen/fui_auth_method_button_margin"
-        android:textSize="16sp"/>
+        android:layout_weight="1"
+        android:maxWidth="@dimen/fui_auth_method_button_width"
+        android:textSize="16sp" />
 
     <CheckBox
         android:id="@+id/checkBox"
